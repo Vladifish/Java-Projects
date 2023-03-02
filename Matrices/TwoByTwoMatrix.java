@@ -25,6 +25,8 @@ public class TwoByTwoMatrix {
         double[][] C = product2x2Matrix(A, B);
         System.out.println("Matrix AxB: ");
         displayMatrix(C);
+        System.out.println("New Test");
+        displayMatrix(Matrix.matrixProduct(A, B));
 
     }
 

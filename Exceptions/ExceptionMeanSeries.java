@@ -22,8 +22,8 @@ class Series {
             sum += value;
         }
         double lastValue = a + n - 1 * d;
-        System.out.println((a + n - 1 * d));
-        System.out.println();
+        System.out.println(lastValue);
+        System.out.println("Sum");
     }
 
     public void setN(int n) {

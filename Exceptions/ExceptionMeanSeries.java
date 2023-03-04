@@ -1,6 +1,44 @@
+// Vladimir Gray P. Velazco
 package Exceptions;
 
+import java.util.Scanner;
+
 public class ExceptionMeanSeries {
+    static Scanner console = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        createLine();
+
+        while (true) {
+            System.out.println("Multi-function Calculator :D");
+            createLine();
+            System.out.println // creates options
+            ("""
+                    Select Function:
+                    A - Hailstone Sequence
+                    B - Harmonic Mean
+                    C - Geometric mean
+                    D - Taylor Polynomial of Degree n
+                    E - Prime Number Test
+                    F - Quit the Program""");
+            createLine();
+            char type = validate();
+            createLine();
+            switch (type) {
+                case 'A':
+            }
+        } // end of main loop
+    }
+
+    private static char validate() {
+        char validatedInput = console.next().charAt(0);
+        while (validatedInput != 'A' && validatedInput != 'B' && validatedInput != 'C')
+            return validatedInput;
+    }
+
+    private static void createLine() {
+        System.out.println("------------------------------------------");
+    }
 
 }
 
@@ -41,6 +79,10 @@ class Series {
 
     public void setD(double d) {
         this.d = d;
+    }
+
+    public void setR(double r) {
+        this.r = r;
     }
 
     public double getSum() {

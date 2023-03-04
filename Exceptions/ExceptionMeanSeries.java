@@ -7,6 +7,7 @@ public class ExceptionMeanSeries {
     static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         createLine();
 
         while (true) {
@@ -26,6 +27,7 @@ public class ExceptionMeanSeries {
             createLine();
             switch (type) {
                 case 'A':
+
             }
         } // end of main loop
     }
@@ -50,6 +52,11 @@ class Series {
     private int n;
     private double a, d, r;
     private double sum = 0;
+
+    public Series() {
+        Scanner console = new Scanner(System.in);
+        System.out.println("Input ");
+    }
 
     void arithmetic() {
         System.out.print("S = ");

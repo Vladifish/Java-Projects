@@ -31,9 +31,13 @@ public class ExceptionMeanSeries {
     }
 
     private static char validate() {
-        char validatedInput = console.next().charAt(0);
-        while (validatedInput != 'A' && validatedInput != 'B' && validatedInput != 'C')
-            return validatedInput;
+        char validatedInput = console.next().toUpperCase().charAt(0);
+        while (validatedInput != 'A' && validatedInput != 'B' && validatedInput != 'C' &&
+                validatedInput != 'D' && validatedInput != 'E' && validatedInput != 'F') {
+            System.out.println("Unrecognized Input : Input Again!");
+            validatedInput = console.next().toUpperCase().charAt(0);
+        }
+        return validatedInput;
     }
 
     private static void createLine() {

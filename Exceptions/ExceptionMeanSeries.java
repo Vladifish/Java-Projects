@@ -29,23 +29,24 @@ public class ExceptionMeanSeries {
 
             if (type == 'A' || type == 'B') {
                 Series series = new Series();
-                System.out.println("Input the first term (a, double value):");
+                System.out.println("Input the first term (a) must be a double value:");
                 series.setA(validateDouble());
-                System.out.println("Input the number of items (n, must be a positive integer):");
-                series.setAndValidateN(console);
+                System.out.println("Input the number of items (n) must be a positive integer:");
+                series.setN(validateN());
                 if (type == 'A') {
-                    System.out.println("Input the common difference (d, double value):");
+                    System.out.println("Input the common difference (d) must be a double value:");
                     series.setD(validateDouble());
                     series.arithmetic();
                 } else {
-                    System.out.println("Input the common ratio (d, double value):");
+                    System.out.println("Input the common ratio (d) must be a double value:");
                     series.setR(validateDouble());
                     series.geometric();
                 }
                 System.out.println("Sum = " + series.getSum());
+
             } else if (type == 'C' || type == 'D') {
                 Mean mean = new Mean();
-                System.out.println("Input numbers, enter 0 to exit");
+                System.out.println("Input numbers, enter 0 to exit:");
                 if (type == 'C') {
                     try {
                         mean.harmonic(console);
@@ -53,11 +54,16 @@ public class ExceptionMeanSeries {
                         System.out.println("Error : Division by Zero");
                     }
 
-                }
-
-                else if (type == 'D')
+                } else if (type == 'D')
                     mean.geometric(console);
+                // works for both geo and harmonic
                 System.out.println("Mean = " + mean.getMean());
+
+            } else if (type == 'E') {
+                TaylorPolynomial taylor = new TaylorPolynomial();
+                System.out.println("Input the degree of the polynomial (n) must be a positive integer");
+                taylor.setN(validateN());
+                taylor.displayTermsAndSum();
             } else if (type == 'F') {
                 System.out.println("Ending Program : GoodBye!");
                 break;
@@ -92,6 +98,26 @@ public class ExceptionMeanSeries {
 
     private static void createLine() {
         System.out.println("------------------------------------------");
+    }
+
+    public static int validateN() {
+        int n = 0;
+        while (true) {
+            try {
+                n = Integer.parseInt(console.next());
+                if (n <= 0) {
+                    System.out.println("Please input an integer greater than 0");
+                    n = Integer.parseInt(console.next());
+                } else {
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please input an integer");
+            } catch (NumberFormatException e) {
+                System.out.println("Unrecognized Input : Input again");
+            }
+        }
+        return n;
     }
 
 }
@@ -143,24 +169,6 @@ class Series {
         return sum;
     }
 
-    public void setAndValidateN(Scanner input) {
-        while (true) {
-            try {
-                n = Integer.parseInt(input.next());
-                if (n <= 0) {
-                    System.out.println("Please input an integer greater than 0");
-                    n = Integer.parseInt(input.next());
-                } else {
-                    break;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Please input an integer");
-            } catch (NumberFormatException e) {
-                System.out.println("Unrecognized Input : Input again");
-            }
-        }
-    }
-
 }
 
 class Mean {
@@ -206,4 +214,22 @@ class Mean {
     public double getMean() {
         return mean;
     }
+}
+
+class TaylorPolynomial {
+    private int n;
+    private double sum = 0;
+
+    public void displayTermsAndSum() {
+
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public double getSum() {
+        return sum;
+    }
+
 }

@@ -43,6 +43,8 @@ public class ExceptionMeanSeries {
                     series.geometric();
                 }
                 System.out.println("Sum = " + series.getSum());
+            } else if (type == 'C' || type == 'D') {
+
             } else if (type == 'F') {
                 System.out.println("Ending Program : GoodBye!");
                 break;
@@ -86,7 +88,7 @@ class Series {
     private double a, d, r;
     private double sum = 0;
 
-    void arithmetic() {
+    public void arithmetic() {
         System.out.print("S = ");
         for (int i = 1; i < n; i++) {
             double value = a + (i - 1) * d;
@@ -97,7 +99,7 @@ class Series {
         System.out.println(lastValue);
     }
 
-    void geometric() {
+    public void geometric() {
         System.out.print("S = ");
         for (int i = 1; i < n; i++) {
             double value = a * Math.pow(r, i - 1);
@@ -146,4 +148,30 @@ class Series {
         }
     }
 
+}
+
+class Mean {
+    private double mean;
+
+    public void harmonic(Scanner input) {
+        double sum = 0;
+        int n = 0;
+        mean = 0;
+        while (true) {
+            try {
+                double x = input.nextDouble();
+                if (x == 0)
+                    break;
+                mean += 1 / (x);
+                n++;
+            } catch (InputMismatchException e) {
+                System.out.println("Unrecognized Input Try Again");
+            }
+        }
+        mean = n / sum;
+    }
+
+    public double getMean() {
+        return mean;
+    }
 }

@@ -1,6 +1,7 @@
 // Vladimir Gray P. Velazco
 package Exceptions;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExceptionMeanSeries {
@@ -23,21 +24,46 @@ public class ExceptionMeanSeries {
                     E - Prime Number Test
                     F - Quit the Program""");
             createLine();
-            char type = validate();
+            char type = validateChoice();
             createLine();
-            switch (type) {
-                case 'A':
-
+            if (type == 'A' || type == 'B') {
+                Series series = new Series();
+                System.out.println("Input the first term (a, double value):");
+                series.setA(validateDouble());
+                System.out.println("Input the number of items (n, must be a positive integer):");
+                series.setAndValidateN(console);
+                if (type == 'A') {
+                    series.setD(validateDouble());
+                    series.arithmetic();
+                } else {
+                    series.setR(validateDouble());
+                    series.geometric();
+                }
+                System.out.println("Sum = " + series.getSum());
             }
+
         } // end of main loop
     }
 
-    private static char validate() {
+    private static char validateChoice() {
         char validatedInput = console.next().toUpperCase().charAt(0);
         while (validatedInput != 'A' && validatedInput != 'B' && validatedInput != 'C' &&
                 validatedInput != 'D' && validatedInput != 'E' && validatedInput != 'F') {
             System.out.println("Unrecognized Input : Input Again!");
             validatedInput = console.next().toUpperCase().charAt(0);
+        }
+        return validatedInput;
+    }
+
+    private static double validateDouble() {
+        double validatedInput = 0;
+        while (true) {
+            try {
+                validatedInput = Integer.parseInt(console.next());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Unrecognized Input : Input a double value");
+            }
         }
         return validatedInput;
     }
@@ -52,11 +78,6 @@ class Series {
     private int n;
     private double a, d, r;
     private double sum = 0;
-
-    public Series() {
-        Scanner console = new Scanner(System.in);
-        System.out.println("Input ");
-    }
 
     void arithmetic() {
         System.out.print("S = ");
@@ -98,6 +119,24 @@ class Series {
 
     public double getSum() {
         return sum;
+    }
+
+    public void setAndValidateN(Scanner input) {
+        while (true) {
+            try {
+                n = Integer.parseInt(input.next());
+                if (n <= 0) {
+                    System.out.println("Please input an integer greater than 0");
+                    n = Integer.parseInt(input.next());
+                } else {
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please input an integer");
+            } catch (NumberFormatException e) {
+                System.out.println("Unrecognized Input : Input again");
+            }
+        }
     }
 
 }

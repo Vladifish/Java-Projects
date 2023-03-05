@@ -43,6 +43,21 @@ public class ExceptionMeanSeries {
                     series.geometric();
                 }
                 System.out.println("Sum = " + series.getSum());
+            } else if (type == 'C' || type == 'D') {
+                Mean mean = new Mean();
+                System.out.println("Input numbers, enter 0 to exit");
+                if (type == 'C') {
+                    try {
+                        mean.harmonic(console);
+                    } catch (ArithmeticException e) {
+                        System.out.println("Error : Division by Zero");
+                    }
+
+                }
+
+                else if (type == 'D')
+                    mean.geometric(console);
+                System.out.println("Mean = " + mean.getMean());
             } else if (type == 'F') {
                 System.out.println("Ending Program : GoodBye!");
                 break;
@@ -86,7 +101,7 @@ class Series {
     private double a, d, r;
     private double sum = 0;
 
-    void arithmetic() {
+    public void arithmetic() {
         System.out.print("S = ");
         for (int i = 1; i < n; i++) {
             double value = a + (i - 1) * d;
@@ -97,7 +112,7 @@ class Series {
         System.out.println(lastValue);
     }
 
-    void geometric() {
+    public void geometric() {
         System.out.print("S = ");
         for (int i = 1; i < n; i++) {
             double value = a * Math.pow(r, i - 1);
@@ -146,4 +161,49 @@ class Series {
         }
     }
 
+}
+
+class Mean {
+    private double mean = 0;
+
+    public void harmonic(Scanner input) throws ArithmeticException {
+        double sum = 0;
+        int n = 0;
+        while (true) {
+            try {
+                double x = input.nextDouble();
+                if (x == 0)
+                    break;
+                sum += 1 / (x);
+                n++;
+            } catch (InputMismatchException e) {
+                System.out.println("Unrecognized Input Try Again");
+            }
+        }
+        if (n == 0)
+            throw new ArithmeticException();
+        else
+            mean = n / sum;
+    }
+
+    public void geometric(Scanner input) {
+        double product = 1;
+        int n = 0;
+        while (true) {
+            try {
+                double x = input.nextDouble();
+                if (x == 0)
+                    break;
+                product *= x;
+                n++;
+            } catch (InputMismatchException e) {
+                System.out.println("Unrecognized Input Try Again");
+            }
+        }
+        mean = Math.pow(product, 1.0 / n);
+    }
+
+    public double getMean() {
+        return mean;
+    }
 }

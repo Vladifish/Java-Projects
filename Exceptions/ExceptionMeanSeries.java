@@ -44,7 +44,13 @@ public class ExceptionMeanSeries {
                 }
                 System.out.println("Sum = " + series.getSum());
             } else if (type == 'C' || type == 'D') {
-
+                Mean mean = new Mean();
+                System.out.println("Input numbers, enter 0 to exit");
+                if (type == 'C')
+                    mean.harmonic(console);
+                else if (type == 'D')
+                    mean.geometric(console);
+                System.out.println("Mean = " + mean.getMean());
             } else if (type == 'F') {
                 System.out.println("Ending Program : GoodBye!");
                 break;
@@ -151,12 +157,11 @@ class Series {
 }
 
 class Mean {
-    private double mean;
+    private double mean = 0;
 
-    public void harmonic(Scanner input) {
+    public void harmonic(Scanner input) throws ArithmeticException {
         double sum = 0;
         int n = 0;
-        mean = 0;
         while (true) {
             try {
                 double x = input.nextDouble();
@@ -168,7 +173,16 @@ class Mean {
                 System.out.println("Unrecognized Input Try Again");
             }
         }
-        mean = n / sum;
+        if (n == 0)
+            throw new ArithmeticException();
+        else
+            mean = n / sum;
+    }
+
+    public void geometric(Scanner input) {
+        double product = 1;
+        int n = 0;
+
     }
 
     public double getMean() {

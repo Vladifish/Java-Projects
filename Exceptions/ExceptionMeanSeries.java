@@ -63,7 +63,10 @@ public class ExceptionMeanSeries {
                 TaylorPolynomial taylor = new TaylorPolynomial();
                 System.out.println("Input the degree of the polynomial (n) must be a positive integer");
                 taylor.setN(validateN());
+                taylor.setX(validateDouble());
                 taylor.displayTermsAndSum();
+                System.out.println("Sum = " + taylor.getSum());
+
             } else if (type == 'F') {
                 System.out.println("Ending Program : GoodBye!");
                 break;
@@ -219,13 +222,32 @@ class Mean {
 class TaylorPolynomial {
     private int n;
     private double sum = 0;
+    private double x;
 
     public void displayTermsAndSum() {
+        System.out.print("T = ");
+        for (int i = 0; i < n; i++) {
+            double term = Math.pow(x, i) / factorial(i);
+            sum += term;
+            System.out.printf("%.2f", term);
+            if (i + 1 != n)
+                System.out.print(" + ");
+        }
+        System.out.println();
+    }
 
+    private int factorial(int n) {
+        if (n < 2)
+            return 1;
+        return factorial(n - 1) * n;
     }
 
     public void setN(int n) {
         this.n = n;
+    }
+
+    public void setX(double x) {
+        this.x = x;
     }
 
     public double getSum() {

@@ -17,15 +17,16 @@ public class ExceptionMeanSeries {
             System.out.println // creates options
             ("""
                     Select Function:
-                    A - Hailstone Sequence
-                    B - Harmonic Mean
-                    C - Geometric mean
-                    D - Taylor Polynomial of Degree n
-                    E - Prime Number Test
+                    A - Arithmetic Series
+                    B - Geometric Series
+                    C - Harmonic Mean
+                    D - Geometric Mean
+                    E - Taylor Polynomial
                     F - Quit the Program""");
             createLine();
             char type = validateChoice();
             createLine();
+
             if (type == 'A' || type == 'B') {
                 Series series = new Series();
                 System.out.println("Input the first term (a, double value):");
@@ -33,16 +34,22 @@ public class ExceptionMeanSeries {
                 System.out.println("Input the number of items (n, must be a positive integer):");
                 series.setAndValidateN(console);
                 if (type == 'A') {
+                    System.out.println("Input the common difference (d, double value):");
                     series.setD(validateDouble());
                     series.arithmetic();
                 } else {
+                    System.out.println("Input the common ratio (d, double value):");
                     series.setR(validateDouble());
                     series.geometric();
                 }
                 System.out.println("Sum = " + series.getSum());
+            } else if (type == 'F') {
+                System.out.println("Ending Program : GoodBye!");
+                break;
             }
+            createLine();
 
-        } // end of main loop
+        } // end of program loop
     }
 
     private static char validateChoice() {

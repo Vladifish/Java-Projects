@@ -2,7 +2,11 @@
 package Exceptions;
 
 public class ExceptionFacultySalary {
+    public static void main(String[] args) {
+        Faculty member = new Instructor();
 
+        System.out.println(member.getCompetencyRate(5));
+    }
 }
 
 interface Faculty {
@@ -13,6 +17,17 @@ interface Faculty {
     int getAllowablePreparations();
 
     double getPreparationRate();
+
+    default double getCompetencyRate(double score) {
+        if (score < 22)
+            return 0;
+        else if (score <= 24)
+            return 0.05;
+        else if (score < 27)
+            return 0.065;
+        else
+            return 0.075;
+    }
 }
 
 class Instructor implements Faculty {

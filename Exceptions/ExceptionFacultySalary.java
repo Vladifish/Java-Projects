@@ -4,15 +4,39 @@ package Exceptions;
 import java.util.Scanner;
 
 public class ExceptionFacultySalary {
+    private static Scanner console = new Scanner(System.in);
+
     public static void main(String[] args) {
-        String position;
         do {
+            System.out.println("Good Day! What is Your Position?");
+            System.out.println("A - " + Instructor.getPositionName());
+            System.out.println("B - " + AsstProfessor.getPositionName());
+            System.out.println("C - " + Professor.getPositionName());
+            System.out.println("Enter the letter of your position: ");
+            // Input Validation
+            String position = console.next().toUpperCase();
+            while (!(position.equals("A") || position.equals("B") || position.equals("C"))) {
+                System.out.println("Invalid Input : Input Again");
+                position = console.next().toUpperCase();
+            }
+            Faculty member;
+            switch (position) {
+                case "A":
+                    member = new Instructor();
+                    break;
+                case "B":
+                    member = new AsstProfessor();
+                    break;
+                default:
+                    member = new Professor();
+            }
 
         } while (run());
     }
 
     private static boolean run() {
-        return 
+        System.out.println("Continue? Press Any Key to Continue, 0 to Exit");
+        return console.nextDouble() != 0;
     }
 }
 
@@ -69,6 +93,10 @@ class Instructor implements Faculty {
         return 0.023;
     }
 
+    public static String getPositionName() {
+        return "Instructor";
+    }
+
 }
 
 class AsstProfessor implements Faculty {
@@ -93,6 +121,10 @@ class AsstProfessor implements Faculty {
         return 0.03;
     }
 
+    public static String getPositionName() {
+        return "Assistant Professor";
+    }
+
 }
 
 class Professor implements Faculty {
@@ -115,6 +147,10 @@ class Professor implements Faculty {
     @Override
     public double getPreparationRate() {
         return 0.04;
+    }
+
+    public static String getPositionName() {
+        return "Professor";
     }
 
 }

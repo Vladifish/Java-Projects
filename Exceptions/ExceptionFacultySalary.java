@@ -9,6 +9,7 @@ public class ExceptionFacultySalary {
 
     public static void main(String[] args) {
         do {
+            createLine();
             System.out.println("Good Day! What is Your Position?");
             System.out.println("A - Instructor");
             System.out.println("B - Assistant Professor");
@@ -20,6 +21,7 @@ public class ExceptionFacultySalary {
                 System.out.println("Invalid Input : Input Again");
                 position = console.next().toUpperCase();
             }
+            createLine();
 
             Faculty member;
             switch (position) {
@@ -43,6 +45,7 @@ public class ExceptionFacultySalary {
 
             System.out.println("Input faculty evaluation score: ");
             double evalScore = validateEvalScore();
+            createLine();
 
             // salary = number of lecture units*lecture rate + number of lab units*lab rate
             // SB = number of preparations*PR*Salary + CMR*Salary
@@ -50,7 +53,19 @@ public class ExceptionFacultySalary {
             double SB = preparations * member.getPreparationRate() * salary
                     + member.getCompetencyRate(evalScore) * salary;
             displayEndMessage(member, salary, SB);
+            createLine();
         } while (run());
+    }
+
+    private static boolean run() {
+        System.out.println("Continue? Press Any Key to Continue, 0 to Exit");
+        return console.nextDouble() != 0;
+    }
+
+    private static void displayEndMessage(Faculty member, double salary, double SB) {
+        System.out.println("Hello " + member.getPositionName());
+        System.out.printf("Your calculated salary for this month is: %.2f. While Your Semestral Bonus is: %.2f\n",
+                salary, SB);
     }
 
     private static int validateUnits() {
@@ -92,7 +107,7 @@ public class ExceptionFacultySalary {
         while (true) {
             try {
                 evalScore = Double.parseDouble(console.next());
-                if (evalScore > 0 && evalScore <= 30)
+                if (evalScore >= 0 && evalScore <= 30)
                     return evalScore;
                 // Unreachable if correct value
                 throw new InvalidScoreError("Error : Value must be between 0 and 30 (inclusive)");
@@ -104,15 +119,8 @@ public class ExceptionFacultySalary {
         }
     }
 
-    private static boolean run() {
-        System.out.println("Continue? Press Any Key to Continue, 0 to Exit");
-        return console.nextDouble() != 0;
-    }
-
-    private static void displayEndMessage(Faculty member, double salary, double SB) {
-        System.out.println("Hello " + member.getPositionName());
-        System.out.printf("Your calculated salary for this month is: %.2f. While Your Semestral Bonus is: %.2f\n",
-                salary, SB);
+    private static void createLine() {
+        System.out.println("--------------------------------------------");
     }
 }
 

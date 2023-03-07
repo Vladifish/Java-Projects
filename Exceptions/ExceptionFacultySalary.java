@@ -10,9 +10,9 @@ public class ExceptionFacultySalary {
     public static void main(String[] args) {
         do {
             System.out.println("Good Day! What is Your Position?");
-            System.out.println("A - " + Instructor.getPositionName());
-            System.out.println("B - " + AsstProfessor.getPositionName());
-            System.out.println("C - " + Professor.getPositionName());
+            System.out.println("A - Instructor");
+            System.out.println("B - Assistant Professor");
+            System.out.println("C - Professor");
             System.out.println("Enter the letter of your position: ");
             // Input Validation
             String position = console.next().toUpperCase();
@@ -49,7 +49,7 @@ public class ExceptionFacultySalary {
             double salary = lectureUnits * member.getLectureRate() + labUnits * member.getLabRate();
             double SB = preparations * member.getPreparationRate() * salary
                     + member.getCompetencyRate(evalScore) * salary;
-
+            displayEndMessage(member, salary, SB);
         } while (run());
     }
 
@@ -110,7 +110,9 @@ public class ExceptionFacultySalary {
     }
 
     private static void displayEndMessage(Faculty member, double salary, double SB) {
-
+        System.out.println("Hello " + member.getPositionName());
+        System.out.printf("Your calculated salary for this month is: %.2f. While Your Semestral Bonus is: %.2f\n",
+                salary, SB);
     }
 }
 
@@ -132,6 +134,8 @@ interface Faculty {
     int getAllowablePreparations();
 
     double getPreparationRate();
+
+    String getPositionName();
 
     default double getCompetencyRate(double score) throws InvalidScoreError {
         if (score < 22)
@@ -167,7 +171,7 @@ class Instructor implements Faculty {
         return 0.023;
     }
 
-    public static String getPositionName() {
+    public String getPositionName() {
         return "Instructor";
     }
 
@@ -195,7 +199,7 @@ class AsstProfessor implements Faculty {
         return 0.03;
     }
 
-    public static String getPositionName() {
+    public String getPositionName() {
         return "Assistant Professor";
     }
 
@@ -223,7 +227,7 @@ class Professor implements Faculty {
         return 0.04;
     }
 
-    public static String getPositionName() {
+    public String getPositionName() {
         return "Professor";
     }
 

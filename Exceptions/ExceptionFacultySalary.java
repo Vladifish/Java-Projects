@@ -1,11 +1,28 @@
 // Vladimir Gray P. Velazco 1-CSC
 package Exceptions;
 
+import java.util.Scanner;
+
 public class ExceptionFacultySalary {
     public static void main(String[] args) {
-        Faculty member = new Instructor();
+        String position;
+        do {
 
-        System.out.println(member.getCompetencyRate(5));
+        } while (run());
+    }
+
+    private static boolean run() {
+        return 
+    }
+}
+
+class InvalidScoreError extends Error {
+    InvalidScoreError() {
+        System.out.println("Error : Added Score Not In Range");
+    }
+
+    InvalidScoreError(String message) {
+        System.out.println(message);
     }
 }
 
@@ -18,7 +35,7 @@ interface Faculty {
 
     double getPreparationRate();
 
-    default double getCompetencyRate(double score) {
+    default double getCompetencyRate(double score) throws InvalidScoreError {
         if (score < 22)
             return 0;
         else if (score <= 24)

@@ -37,6 +37,9 @@ public class ExceptionFacultySalary {
             int lectureUnits = validateUnits();
             System.out.println("Input number of lab units: ");
             int labUnits = validateUnits();
+            System.out.printf("Input Number of Preparations (can only be less than or equal to %d):\n",
+                    member.getAllowablePreparations());
+            int preparations = validatePreparations(member.getAllowablePreparations());
 
             System.out.println("Input faculty evaluation score: ");
             double evalScore = validateEvalScore();
@@ -44,6 +47,8 @@ public class ExceptionFacultySalary {
             // salary = number of lecture units*lecture rate + number of lab units*lab rate
             // SB = number of preparations*PR*Salary + CMR*Salary
             double salary = lectureUnits * member.getLectureRate() + labUnits * member.getLabRate();
+            double SB = preparations * member.getPreparationRate() * salary
+                    + member.getCompetencyRate(evalScore) * salary;
 
         } while (run());
     }
@@ -65,15 +70,32 @@ public class ExceptionFacultySalary {
         }
     }
 
+    private static int validatePreparations(int max) {
+        int preparations;
+        while (true) {
+            try {
+                preparations = Integer.parseInt(console.next());
+                if (preparations > 0 && preparations <= max)
+                    return preparations;
+                // Unreachable if correct value
+                System.out.println("Value must be greater than 0 but less than " + max);
+            } catch (NumberFormatException e) {
+                System.out.println("Error : Value Must be a Number");
+            } catch (InputMismatchException e) {
+                System.out.println("Error : Value Must be an Integer");
+            }
+        }
+    }
+
     private static double validateEvalScore() {
         double evalScore;
         while (true) {
             try {
                 evalScore = Double.parseDouble(console.next());
-                if (evalScore > 0)
+                if (evalScore > 0 && evalScore <= 30)
                     return evalScore;
                 // Unreachable if correct value
-                throw new InvalidScoreError("Error : Value must be between 0 and 30");
+                throw new InvalidScoreError("Error : Value must be between 0 and 30 (inclusive)");
             } catch (NumberFormatException e) {
                 System.out.println("Error : Value Must be a Number");
             } catch (InvalidScoreError e) {
@@ -85,6 +107,10 @@ public class ExceptionFacultySalary {
     private static boolean run() {
         System.out.println("Continue? Press Any Key to Continue, 0 to Exit");
         return console.nextDouble() != 0;
+    }
+
+    private static void displayEndMessage(Faculty member, double salary, double SB) {
+
     }
 }
 

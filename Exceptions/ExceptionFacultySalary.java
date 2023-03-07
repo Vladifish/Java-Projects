@@ -35,6 +35,15 @@ public class ExceptionFacultySalary {
 
             System.out.println("Input number of lecture units: ");
             int lectureUnits = validateUnits();
+            System.out.println("Input number of lab units: ");
+            int labUnits = validateUnits();
+
+            System.out.println("Input faculty evaluation score: ");
+            double evalScore = validateEvalScore();
+
+            // salary = number of lecture units*lecture rate + number of lab units*lab rate
+            // SB = number of preparations*PR*Salary + CMR*Salary
+            double salary = lectureUnits * member.getLectureRate() + labUnits * member.getLabRate();
 
         } while (run());
     }
@@ -52,6 +61,23 @@ public class ExceptionFacultySalary {
                 System.out.println("Error : Value Must be a Number");
             } catch (InputMismatchException e) {
                 System.out.println("Error : Value Must be an Integer");
+            }
+        }
+    }
+
+    private static double validateEvalScore() {
+        double evalScore;
+        while (true) {
+            try {
+                evalScore = Double.parseDouble(console.next());
+                if (evalScore > 0)
+                    return evalScore;
+                // Unreachable if correct value
+                throw new InvalidScoreError("Error : Value must be between 0 and 30");
+            } catch (NumberFormatException e) {
+                System.out.println("Error : Value Must be a Number");
+            } catch (InvalidScoreError e) {
+                System.out.println(e);
             }
         }
     }

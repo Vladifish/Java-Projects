@@ -1,6 +1,7 @@
 // Vladimir Gray P. Velazco 1-CSC
 package Exceptions;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExceptionFacultySalary {
@@ -19,6 +20,7 @@ public class ExceptionFacultySalary {
                 System.out.println("Invalid Input : Input Again");
                 position = console.next().toUpperCase();
             }
+
             Faculty member;
             switch (position) {
                 case "A":
@@ -31,7 +33,27 @@ public class ExceptionFacultySalary {
                     member = new Professor();
             }
 
+            System.out.println("Input number of lecture units: ");
+            int lectureUnits = validateUnits();
+
         } while (run());
+    }
+
+    private static int validateUnits() {
+        int units;
+        while (true) {
+            try {
+                units = Integer.parseInt(console.next());
+                if (units > 0)
+                    return units;
+                // Unreachable if correct value
+                System.out.println("Value must be greater than 0");
+            } catch (NumberFormatException e) {
+                System.out.println("Error : Value Must be a Number");
+            } catch (InputMismatchException e) {
+                System.out.println("Error : Value Must be an Integer");
+            }
+        }
     }
 
     private static boolean run() {

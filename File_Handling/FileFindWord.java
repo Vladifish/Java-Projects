@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class FileFindWord {
     public static void main(String[] args) throws IOException {
-        File lyrics = new File("File_Handling/test.txt");
+        File lyrics = new File("File_Handling/test.txt"); // change depending on your directory
         Scanner console = new Scanner(System.in);
 
         System.out.print("Enter a word to be searched: ");

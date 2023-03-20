@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class FileFindWord {
     public static void main(String[] args) throws IOException {
-        File f0 = new File("File_Handling/Epic.txt");
+        File f0 = new File("File_Handling/Editables/Epic.txt");
         try {
             if (f0.createNewFile()) {
                 System.out.println("File " + f0.getName() + " Created Successfully"); // returns file name

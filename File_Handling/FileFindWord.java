@@ -11,38 +11,53 @@ public class FileFindWord {
 
         System.out.print("Enter a word to be searched: ");
         String word = console.next();
-
+        String foundLine = "";
+        int foundLineNum = 0;
+        createLine();
         boolean found = false;
         try {
             Scanner lyricSearcher = new Scanner(lyrics);
             int lineNum = 0;
-            String line = "";
-            while (lyricSearcher.hasNextLine() && !found) {
-                line = lyricSearcher.nextLine();
+            while (lyricSearcher.hasNextLine()) {
+                String line = lyricSearcher.nextLine();
                 String[] splitLine = line.split(" ");
 
+                // Line Count
+                lineNum++;
+                System.out.printf("%d: ", lineNum);
+
+                // The Piece de Resistance
                 for (String el : splitLine) {
                     System.out.print(el + " ");
-                    if (el == word) {
+                    if (el.equalsIgnoreCase(word)) {
                         found = true;
+                        foundLine = line;
+                        foundLineNum = lineNum;
                         break;
                     }
                 }
                 System.out.println();
-                lineNum++;
+
             }
+            createLine();
+
             if (found) {
-                System.out.printf("Word: %s, Found in Line #: %d\n", word, lineNum);
-                System.out.println("Line: " + line);
+                System.out.printf("Given Word: %s :: Last Found in Line #: %d\n", word, foundLineNum);
+                System.out.println("Line: " + foundLine);
             } else {
                 System.out.println("Word not in the song");
             }
-
             lyricSearcher.close();
-            console.close();
         } catch (IOException e) {
             System.out.println("Something went wrong");
+        } finally {
+            console.close();
+            createLine();
         }
 
+    }
+
+    static void createLine() {
+        System.out.println("-------------------------------------------");
     }
 }

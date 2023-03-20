@@ -6,6 +6,6 @@ import java.util.Scanner;
 
 public class FileFindWord {
     public static void main(String[] args) throws IOException {
-
+        File lyrics = new File("test.txt");
     }
 }

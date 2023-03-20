@@ -13,6 +13,9 @@ public class FileFindWord {
             } else {
                 System.out.println("File already in directory");
             }
+            System.out.print(f0.getName() + " ");
+            System.out.printf("Writable: %B :: Readable: %B\n", f0.canWrite(), f0.canRead());
+
         } catch (IOException e) {
             System.out.println("An unexpected error has occured");
             e.printStackTrace();

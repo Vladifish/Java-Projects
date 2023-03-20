@@ -1,8 +1,8 @@
 // Vladimir Gray Velazco 1CSC
 package File_Handling;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class FileFindWord {
     public static void main(String[] args) throws IOException {
@@ -15,6 +15,14 @@ public class FileFindWord {
             }
             System.out.print(f0.getName() + " ");
             System.out.printf("Writable: %B :: Readable: %B\n", f0.canWrite(), f0.canRead());
+
+            Scanner console = new Scanner(System.in);
+            FileWriter fileWriter = new FileWriter(f0);
+
+            System.out.println("Input a word to be added to file: ");
+            fileWriter.write(console.next());
+            System.out.println("File Writing Successful");
+            fileWriter.close();
 
         } catch (IOException e) {
             System.out.println("An unexpected error has occured");

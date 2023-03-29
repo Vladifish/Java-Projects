@@ -5,10 +5,12 @@ import javax.swing.*;
 import java.io.*;
 
 public class FileClassRecord extends JOptionPane {
+
+    static final int NUM_STUDENTS = 3;
+    static final int NUM_QUIZZES = 3;
+
     public static void main(String[] args) {
         char choice;
-        final int COLUMNS = 5;
-        final int ROWS = 7;
         while ((choice = optionMessage()) != 'C') {
             final String className = showInputDialog(null, "Enter Class Name");
             String path = "File_Handling/" + className + ".csv"; // edit your path, mine is like this so it might not
@@ -24,14 +26,23 @@ public class FileClassRecord extends JOptionPane {
                 }
                 if (choice == 'A') {
                     FileWriter csvEditor = new FileWriter(classRecord);
-                    writeToFile(csvEditor);
+                    writeToFile(csvEditor); // body of the entire choice A
                     csvEditor.close();
+                } else if (choice == 'B') {
+                    // Collated C x R from CSV file
+                    final int COLUMNS = NUM_QUIZZES + 2; // 2 Additional Columns for Average and Student #
+                    final int ROWS = NUM_STUDENTS + 4; // 4 additional Rows from Max, Min, Headings, and Average
+
+                    String[][] csv_data = new String[ROWS][COLUMNS];
+                    for (int i = 0; i < ROWS; i++) {
+
+                    }
                 }
             } catch (IOException e) {
                 showMessageDialog(null, "404: File Not Found", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
-            }
-        }
+            } // End of Try-Catch Block
+        } // End of While-Loop
         showMessageDialog(null, "Exiting :: GOOD BYE!", "EXITING", JOptionPane.INFORMATION_MESSAGE);
 
         // GOOD BYE!
@@ -76,14 +87,13 @@ public class FileClassRecord extends JOptionPane {
     }
 
     private static void writeToFile(FileWriter csvEditor) throws IOException {
+        // creates heading
         String heading[] = { "Student", "Quiz 1", "Quiz 2", "Quiz 3", "Average" };
         for (String word : heading)
             csvEditor.append(word + ",");
         csvEditor.append("\n");
 
         // writes the scores of each student
-        final int NUM_STUDENTS = 3;
-        final int NUM_QUIZZES = 3;
         double[][] scores = new double[NUM_STUDENTS][NUM_QUIZZES];
         for (int i = 0; i < NUM_STUDENTS; i++) {
             csvEditor.append((i + 1) + ",");

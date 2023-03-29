@@ -60,13 +60,13 @@ public class FileClassRecord extends JOptionPane {
         return letterInput;
     }
 
-    public static int validateQuizScore(int studentNum, int quizNum) {
-        int score = -1;
+    public static double validateQuizScore(int studentNum, int quizNum) {
+        double score = -1;
         while (true) {
             try {
                 String message = String.format("Input Score for Quiz # %d of Student %d: (Must be between 0 and 100)",
                         quizNum, studentNum);
-                score = Integer.parseInt(showInputDialog(null, message));
+                score = Double.parseDouble(showInputDialog(null, message));
                 if (score >= 0 && score <= 100)
                     return score;
                 throw new NumberNotInRangeException(); // unreachable with correct input
@@ -147,9 +147,20 @@ public class FileClassRecord extends JOptionPane {
         String[][] csv_data = new String[ROWS][COLUMNS];
         FileReader fr = new FileReader(csvFile);
         BufferedReader csvReader = new BufferedReader(fr);
-        for (int i = 0; i < ROWS; i++) {
 
+        String fullOutput = "";
+        for (int i = 0; i < ROWS; i++) {
+            String line = csvReader.readLine();
+            String[] values = line.split(",");
+
+            for (int j = 0; j < values.length; j++) {
+                fullOutput += String.format("%7s", values[j]);
+            }
+            fullOutput += "\n";
         }
+
+        showMessageDialog(null, fullOutput, "Message", JOptionPane.INFORMATION_MESSAGE);
+
     }
 }
 

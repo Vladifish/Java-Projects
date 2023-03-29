@@ -3,6 +3,8 @@ package File_Handling;
 
 import java.io.*;
 
+import javax.swing.text.AbstractDocument.Content;
+
 // Write a program that will perform the following:
 // a. read a text file (filename: test.txt)
 // b. find all 3-letter words in the text file and store it in “word3.txt”
@@ -41,11 +43,40 @@ public class FileWord345 {
             fileReader.close();
             fr.close();
             // Reading the contents of the three files
-            FileReader fr3 = new FileReader(three_letters);
-            fileReader = new BufferedReader(fr3);
+            createLine();
+            System.out.println("Three Letter Words:");
+            printFileContents(new FileReader(three_letters));
+            createLine();
+            System.out.println("Four Letter Words:");
+            printFileContents(new FileReader(four_letters));
+            createLine();
+            System.out.println("Five Letter Words:");
+            printFileContents(new FileReader(five_letters));
+            createLine();
 
         } catch (IOException e) {
             System.out.println("Error 404: File Not Found");
         }
+    }
+
+    static void printFileContents(FileReader fr) throws IOException {
+        BufferedReader fileReader = new BufferedReader(fr);
+        String line = fileReader.readLine();
+        String[] words = line.split(" ");
+        int count = 0;
+
+        for (String word : words) {
+            System.out.print(word + " ");
+            count = (count + 1) % 5; // breaks after 5 words
+            if (count == 0) {
+                System.out.println();
+            }
+        }
+        System.out.println();
+        fr.close();
+    }
+
+    static void createLine() {
+        System.out.println("------------------------------");
     }
 }

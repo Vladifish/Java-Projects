@@ -2,12 +2,29 @@
 package File_Handling; // maybe also some GUI manipulation
 
 import javax.swing.*;
+import java.io.*;
 
 public class FileClassRecord {
     public static void main(String[] args) {
         while (optionMessage() != 'C') {
+            final String studentName = JOptionPane.showInputDialog(null, "Enter Student Name");
+            String path = "File_Handling/" + studentName + ".csv"; // edit your path, mine is like this so it might not
+                                                                   // work for everyone
+            File studentRecord = new File(path);
 
-        }      
+            try {
+                if (studentRecord.createNewFile()) {
+                    System.out.println("File " + studentRecord.getName() + " Created Successfully"); // returns file
+                                                                                                     // name
+                } else {
+                    System.out.println("File already in directory");
+                }
+
+            } catch (IOException e) {
+                System.out.println("An unexpected error has occured");
+                e.printStackTrace();
+            }
+        }
         JOptionPane.showMessageDialog(null, "Exiting :: GOOD BYE!", "EXITING", JOptionPane.INFORMATION_MESSAGE);
 
         // GOOD BYE!

@@ -6,7 +6,8 @@ import java.io.*;
 
 public class FileClassRecord {
     public static void main(String[] args) {
-        while (optionMessage() != 'C') {
+        char choice;
+        while ((choice = optionMessage()) != 'C') {
             final String studentName = JOptionPane.showInputDialog(null, "Enter Student Name");
             String path = "File_Handling/" + studentName + ".csv"; // edit your path, mine is like this so it might not
                                                                    // work for everyone

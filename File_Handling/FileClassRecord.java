@@ -24,32 +24,11 @@ public class FileClassRecord extends JOptionPane {
                 }
                 if (choice == 'A') {
                     FileWriter csvEditor = new FileWriter(classRecord);
-
-                    String heading[] = { "Student", "Quiz 1", "Quiz 2", "Quiz 3", "Average" };
-                    for (String word : heading)
-                        csvEditor.append(word + ",");
-                    csvEditor.append("\n");
-
-                    // writes the scores of each student
-                    final int NUM_STUDENTS = 3;
-                    final int NUM_QUIZZES = 3;
-                    double[][] scores = new double[NUM_STUDENTS][NUM_QUIZZES];
-                    for (int i = 0; i < NUM_STUDENTS; i++) {
-                        csvEditor.append((i + 1) + ",");
-
-                        int sum = 0;
-                        for (int j = 0; j < NUM_QUIZZES; j++) {
-                            scores[i][j] = validateQuizScore(i + 1, j + 1);
-                            sum += scores[i][j];
-                            csvEditor.append(scores[i][j] + ",");
-                        }
-                        csvEditor.append(sum / 3 + ",");
-                        csvEditor.append("\n");
-                    }
+                    writeToFile(csvEditor);
                     csvEditor.close();
                 }
             } catch (IOException e) {
-                showMessageDialog(null, "An unexpected error has occured");
+                showMessageDialog(null, "404: File Not Found", "ERROR", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
@@ -94,6 +73,60 @@ public class FileClassRecord extends JOptionPane {
                 System.out.println("Something Went Wrong");
             }
         }
+    }
+
+    private static void writeToFile(FileWriter csvEditor) throws IOException {
+        String heading[] = { "Student", "Quiz 1", "Quiz 2", "Quiz 3", "Average" };
+        for (String word : heading)
+            csvEditor.append(word + ",");
+        csvEditor.append("\n");
+
+        // writes the scores of each student
+        final int NUM_STUDENTS = 3;
+        final int NUM_QUIZZES = 3;
+        double[][] scores = new double[NUM_STUDENTS][NUM_QUIZZES];
+        for (int i = 0; i < NUM_STUDENTS; i++) {
+            csvEditor.append((i + 1) + ",");
+
+            int sum = 0;
+            for (int j = 0; j < NUM_QUIZZES; j++) {
+                scores[i][j] = validateQuizScore(i + 1, j + 1);
+                sum += scores[i][j];
+                csvEditor.append(scores[i][j] + ",");
+            }
+            csvEditor.append(sum / 3 + ",");
+            csvEditor.append("\n");
+        }
+
+        // Writes Average, Max and Min
+        csvEditor.append("Average,");
+        for (int i = 0; i < NUM_QUIZZES; i++) {
+            int sum = 0;
+            for (int j = 0; j < NUM_STUDENTS; j++)
+                sum += scores[j][i];
+            csvEditor.append(sum / 3 + ",");
+        }
+        csvEditor.append("\n");
+
+        csvEditor.append("Max,");
+        for (int i = 0; i < NUM_QUIZZES; i++) {
+            double max = scores[1][i];
+            for (int j = 1; j < NUM_STUDENTS; j++)
+                if (max < scores[j][i])
+                    max = scores[j][i];
+            csvEditor.append(max + ",");
+        }
+        csvEditor.append("\n");
+
+        csvEditor.append("Min,");
+        for (int i = 0; i < NUM_QUIZZES; i++) {
+            double min = scores[1][i];
+            for (int j = 1; j < NUM_STUDENTS; j++)
+                if (min > scores[j][i])
+                    min = scores[j][i];
+            csvEditor.append(min + ",");
+        }
+        csvEditor.append("\n");
     }
 }
 

@@ -7,6 +7,8 @@ import java.io.*;
 public class FileClassRecord {
     public static void main(String[] args) {
         char choice;
+        final int COLUMNS = 5;
+        final int ROWS = 7;
         while ((choice = optionMessage()) != 'C') {
             final String studentName = JOptionPane.showInputDialog(null, "Enter Student Name");
             String path = "File_Handling/" + studentName + ".csv"; // edit your path, mine is like this so it might not
@@ -20,7 +22,13 @@ public class FileClassRecord {
                 } else {
                     System.out.println("File already in directory");
                 }
-
+                if (choice == 'A') {
+                    FileWriter csvEditor = new FileWriter(studentRecord);
+                    String heading[] = { "Student", "Quiz 1", "Quiz 2", "Quiz 3", "Average" };
+                    for (String word : heading)
+                        csvEditor.append(word + ",");
+                    csvEditor.close();
+                }
             } catch (IOException e) {
                 System.out.println("An unexpected error has occured");
                 e.printStackTrace();

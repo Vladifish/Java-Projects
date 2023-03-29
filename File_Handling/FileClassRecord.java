@@ -6,10 +6,8 @@ import javax.swing.*;
 public class FileClassRecord {
     public static void main(String[] args) {
         while (optionMessage() != 'C') {
-            String columns[] = { "5", "3", "2" };
-            int row[] = { 1, 2, 3 };
-            JTable recordTable = new JTable();
-        }
+
+        }      
         JOptionPane.showMessageDialog(null, "Exiting :: GOOD BYE!", "EXITING", JOptionPane.INFORMATION_MESSAGE);
 
         // GOOD BYE!

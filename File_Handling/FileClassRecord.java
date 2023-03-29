@@ -20,7 +20,7 @@ public class FileClassRecord extends JOptionPane {
                     showMessageDialog(null, "File " + classRecord.getName() + " Created Successfully"); // returns file
                     // name
                 } else {
-                    showMessageDialog(null, "File already in directory");
+                    showMessageDialog(null, "Opening Existing File");
                 }
                 if (choice == 'A') {
                     FileWriter csvEditor = new FileWriter(classRecord);
@@ -30,9 +30,21 @@ public class FileClassRecord extends JOptionPane {
                         csvEditor.append(word + ",");
                     csvEditor.append("\n");
 
+                    // writes the scores of each student
                     final int NUM_STUDENTS = 3;
+                    final int NUM_QUIZZES = 3;
+                    double[][] scores = new double[NUM_STUDENTS][NUM_QUIZZES];
                     for (int i = 0; i < NUM_STUDENTS; i++) {
-                        csvEditor.append(i + ",");
+                        csvEditor.append((i + 1) + ",");
+
+                        int sum = 0;
+                        for (int j = 0; j < NUM_QUIZZES; j++) {
+                            scores[i][j] = validateQuizScore(i + 1, j + 1);
+                            sum += scores[i][j];
+                            csvEditor.append(scores[i][j] + ",");
+                        }
+                        csvEditor.append(sum / 3 + ",");
+                        csvEditor.append("\n");
                     }
                     csvEditor.close();
                 }
@@ -61,7 +73,36 @@ public class FileClassRecord extends JOptionPane {
         return letterInput;
     }
 
-    public static void validateQuizScore() {
+    public static int validateQuizScore(int studentNum, int quizNum) {
+        int score = -1;
+        while (true) {
+            try {
+                String message = String.format("Input Score for Quiz # %d of Student %d: (Must be between 0 and 100)",
+                        quizNum, studentNum);
+                score = Integer.parseInt(showInputDialog(null, message));
+                if (score >= 0 && score <= 100)
+                    return score;
+                throw new NumberNotInRangeException(); // unreachable with correct input
 
+            } catch (NumberNotInRangeException e) {
+                showMessageDialog(null, "Unrecognized Input, must be a number between 0 and 100", "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException e) {
+                showMessageDialog(null, "Unrecognized Input, must be a number between 0 and 100", "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                System.out.println("Something Went Wrong");
+            }
+        }
+    }
+}
+
+class NumberNotInRangeException extends Exception {
+    NumberNotInRangeException() {
+        System.out.println("ERROR: Number not in range");
+    }
+
+    NumberNotInRangeException(String message) {
+        super(message);
     }
 }

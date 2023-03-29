@@ -12,8 +12,15 @@ public class FileClassRecord extends JOptionPane {
     public static void main(String[] args) {
         char choice;
         while ((choice = optionMessage()) != 'C') {
-            final String className = showInputDialog(null, "Enter Class Name");
-            String path = "File_Handling/" + className + ".csv"; // edit your path, mine is like this so it might not
+
+            String className = "";
+            className = showInputDialog(null, "Enter Class Name");
+
+            if (className == null) // null is the exit and cancel button
+                System.exit(0);
+
+            String path = "File_Handling/" + className + ".csv"; // edit your path, mine is like this so it might
+                                                                 // not
                                                                  // work for everyone
             File classRecord = new File(path);
 
@@ -52,7 +59,12 @@ public class FileClassRecord extends JOptionPane {
                 "C. Quit";
         // magical incantation
         // sends a message, capitalizes then gets the 1st letter of the input
-        char letterInput = showInputDialog(openingMessage).toUpperCase().charAt(0);
+        char letterInput = 'x';
+        try {
+            letterInput = showInputDialog(openingMessage).toUpperCase().charAt(0);
+        } catch (NullPointerException e) { // the cancel button crashes otherwise
+            System.exit(0);
+        }
         while (letterInput != 'A' && letterInput != 'B' && letterInput != 'C') {
             showMessageDialog(null, "Unrecognized Input", "Input Error", JOptionPane.ERROR_MESSAGE);
             letterInput = showInputDialog(openingMessage).toUpperCase().charAt(0);
@@ -77,6 +89,8 @@ public class FileClassRecord extends JOptionPane {
             } catch (NumberFormatException e) {
                 showMessageDialog(null, "Unrecognized Input, must be a number between 0 and 100", "Input Error",
                         JOptionPane.ERROR_MESSAGE);
+            } catch (NullPointerException e) {
+                System.exit(0);
             } catch (Exception e) {
                 System.out.println("Something Went Wrong");
             }
@@ -86,9 +100,10 @@ public class FileClassRecord extends JOptionPane {
     private static void writeToFile(FileWriter csvEditor) throws IOException {
         // creates heading
         String heading[] = { "Student", "Quiz 1", "Quiz 2", "Quiz 3", "Average" };
-        for (String word : heading)
-            csvEditor.append(word + ",");
-        csvEditor.append("\n");
+        for (int i = 0; i < heading.length - 1; i++) {
+            csvEditor.append(heading[i] + ",");
+        }
+        csvEditor.append(heading[heading.length - 1] + "\n");
 
         // writes the scores of each student
         double[][] scores = new double[NUM_STUDENTS][NUM_QUIZZES];
@@ -101,8 +116,7 @@ public class FileClassRecord extends JOptionPane {
                 sum += scores[i][j];
                 csvEditor.append(scores[i][j] + ",");
             }
-            csvEditor.append(sum / 3 + ",");
-            csvEditor.append("\n");
+            csvEditor.append(sum / 3 + "\n");
         }
 
         // Writes Average, Max and Min
@@ -111,7 +125,10 @@ public class FileClassRecord extends JOptionPane {
             int sum = 0;
             for (int j = 0; j < NUM_STUDENTS; j++)
                 sum += scores[j][i];
-            csvEditor.append(sum / 3 + ",");
+            csvEditor.append(sum / 3 + "");
+            if (i != NUM_QUIZZES - 1) {
+                csvEditor.append(",");
+            }
         }
         csvEditor.append("\n");
 
@@ -121,7 +138,10 @@ public class FileClassRecord extends JOptionPane {
             for (int j = 1; j < NUM_STUDENTS; j++)
                 if (max < scores[j][i])
                     max = scores[j][i];
-            csvEditor.append(max + ",");
+            csvEditor.append(max + "");
+            if (i != NUM_QUIZZES - 1) {
+                csvEditor.append(",");
+            }
         }
         csvEditor.append("\n");
 
@@ -131,7 +151,10 @@ public class FileClassRecord extends JOptionPane {
             for (int j = 1; j < NUM_STUDENTS; j++)
                 if (min > scores[j][i])
                     min = scores[j][i];
-            csvEditor.append(min + ",");
+            csvEditor.append(min + "");
+            if (i != NUM_QUIZZES - 1) {
+                csvEditor.append(",");
+            }
         }
         csvEditor.append("\n");
     }
@@ -154,7 +177,7 @@ public class FileClassRecord extends JOptionPane {
             String[] values = line.split(",");
 
             for (int j = 0; j < values.length; j++) {
-                fullOutput += String.format("%7s", values[j]);
+                fullOutput += String.format("%7s ", values[j]);
             }
             fullOutput += "\n";
         }

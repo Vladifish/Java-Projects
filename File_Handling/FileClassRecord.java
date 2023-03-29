@@ -2,21 +2,16 @@
 package File_Handling; // maybe also some GUI manipulation
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
+// I will not write the entire thing in GUI, just trying out buttons rn
 public class FileClassRecord {
     public static void main(String[] args) {
-        JFrame runningFrame = new JFrame("Class Record Creator/Viewer");
-        runningFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        runningFrame.setLayout(null);
-        runningFrame.setSize(500, 500);
-        runningFrame.setVisible(true);
+        do {
+
+        } while (run());
     }
 
-    public static boolean run(JFrame frame) {
-        JButton exitButton = new JButton("Exit");
-        JButton continueButton = new JButton("Continue");
-        return true; // fix later
+    public static boolean run() {
+
     }
 }

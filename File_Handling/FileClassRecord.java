@@ -167,7 +167,6 @@ public class FileClassRecord extends JOptionPane {
         final int COLUMNS = NUM_QUIZZES + 2; // 2 Additional Columns for Average and Student #
         final int ROWS = NUM_STUDENTS + 4; // 4 additional Rows from Max, Min, Headings, and Average
 
-        String[][] csv_data = new String[ROWS][COLUMNS];
         FileReader fr = new FileReader(csvFile);
         BufferedReader csvReader = new BufferedReader(fr);
 

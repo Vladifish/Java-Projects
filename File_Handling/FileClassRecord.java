@@ -6,7 +6,7 @@ import java.io.*;
 
 public class FileClassRecord extends JOptionPane {
 
-    static final int NUM_STUDENTS = 3;
+    static final int NUM_STUDENTS = 3; // will change columns and rows of CSV
     static final int NUM_QUIZZES = 3;
 
     public static void main(String[] args) {
@@ -29,13 +29,10 @@ public class FileClassRecord extends JOptionPane {
                     writeToFile(csvEditor); // body of the entire choice A
                     csvEditor.close();
                 } else if (choice == 'B') {
-                    // Collated C x R from CSV file
-                    final int COLUMNS = NUM_QUIZZES + 2; // 2 Additional Columns for Average and Student #
-                    final int ROWS = NUM_STUDENTS + 4; // 4 additional Rows from Max, Min, Headings, and Average
-
-                    String[][] csv_data = new String[ROWS][COLUMNS];
-                    for (int i = 0; i < ROWS; i++) {
-
+                    try {
+                        displayCSVFile(classRecord);
+                    } catch (EmptyFileException e) {
+                        showMessageDialog(null, "Empty File: File Cannot Be Read", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             } catch (IOException e) {
@@ -138,6 +135,22 @@ public class FileClassRecord extends JOptionPane {
         }
         csvEditor.append("\n");
     }
+
+    private static void displayCSVFile(File csvFile) throws EmptyFileException, IOException {
+        if (csvFile.length() == 0) {
+            throw new EmptyFileException("ERROR: Empty File Cannot Be Read");
+        }
+        // Collated C x R from CSV file
+        final int COLUMNS = NUM_QUIZZES + 2; // 2 Additional Columns for Average and Student #
+        final int ROWS = NUM_STUDENTS + 4; // 4 additional Rows from Max, Min, Headings, and Average
+
+        String[][] csv_data = new String[ROWS][COLUMNS];
+        FileReader fr = new FileReader(csvFile);
+        BufferedReader csvReader = new BufferedReader(fr);
+        for (int i = 0; i < ROWS; i++) {
+
+        }
+    }
 }
 
 class NumberNotInRangeException extends Exception {
@@ -146,6 +159,16 @@ class NumberNotInRangeException extends Exception {
     }
 
     NumberNotInRangeException(String message) {
+        super(message);
+    }
+}
+
+class EmptyFileException extends Exception {
+    EmptyFileException() {
+        System.out.println("ERROR: File Empty");
+    }
+
+    EmptyFileException(String message) {
         super(message);
     }
 }

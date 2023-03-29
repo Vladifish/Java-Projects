@@ -10,24 +10,26 @@ public class FileClassRecord {
         final int COLUMNS = 5;
         final int ROWS = 7;
         while ((choice = optionMessage()) != 'C') {
-            final String studentName = JOptionPane.showInputDialog(null, "Enter Student Name");
-            String path = "File_Handling/" + studentName + ".csv"; // edit your path, mine is like this so it might not
-                                                                   // work for everyone
-            File studentRecord = new File(path);
+            final String className = JOptionPane.showInputDialog(null, "Enter Class Name");
+            String path = "File_Handling/" + className + ".csv"; // edit your path, mine is like this so it might not
+                                                                 // work for everyone
+            File classRecord = new File(path);
 
             try {
-                if (studentRecord.createNewFile()) {
-                    System.out.println("File " + studentRecord.getName() + " Created Successfully"); // returns file
-                                                                                                     // name
+                if (classRecord.createNewFile()) {
+                    System.out.println("File " + classRecord.getName() + " Created Successfully"); // returns file
+                                                                                                   // name
                 } else {
                     System.out.println("File already in directory");
                 }
                 if (choice == 'A') {
-                    FileWriter csvEditor = new FileWriter(studentRecord);
+                    FileWriter csvEditor = new FileWriter(classRecord);
                     String heading[] = { "Student", "Quiz 1", "Quiz 2", "Quiz 3", "Average" };
                     for (String word : heading)
                         csvEditor.append(word + ",");
-                    csvEditor.close();
+
+                    for (int i = 0; i < 3; i++)
+                        csvEditor.close();
                 }
             } catch (IOException e) {
                 System.out.println("An unexpected error has occured");

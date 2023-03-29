@@ -1,12 +1,12 @@
-// Vladimir Gray P. Velazco 1CSC
-package File_Handling; // maybe also some GUI manipulation
+// Vladimir Gray P. Velazco 1CSC, I could have learned JTables but the documentation was heavy
+package File_Handling; // maybe some GUI manipulation
 
 import javax.swing.*;
 import java.io.*;
 
 public class FileClassRecord extends JOptionPane {
 
-    static final int NUM_STUDENTS = 3; // will change columns and rows of CSV
+    static final int NUM_STUDENTS = 3; // scalable, will change columns and rows of CSV
     static final int NUM_QUIZZES = 3;
 
     public static void main(String[] args) {
@@ -110,22 +110,22 @@ public class FileClassRecord extends JOptionPane {
         for (int i = 0; i < NUM_STUDENTS; i++) {
             csvEditor.append((i + 1) + ",");
 
-            int sum = 0;
+            double sum = 0;
             for (int j = 0; j < NUM_QUIZZES; j++) {
                 scores[i][j] = validateQuizScore(i + 1, j + 1);
                 sum += scores[i][j];
                 csvEditor.append(scores[i][j] + ",");
             }
-            csvEditor.append(sum / 3 + "\n");
+            csvEditor.append(sum / NUM_QUIZZES + "\n");
         }
 
         // Writes Average, Max and Min
         csvEditor.append("Average,");
         for (int i = 0; i < NUM_QUIZZES; i++) {
-            int sum = 0;
+            double sum = 0;
             for (int j = 0; j < NUM_STUDENTS; j++)
                 sum += scores[j][i];
-            csvEditor.append(sum / 3 + "");
+            csvEditor.append(sum / NUM_STUDENTS + "");
             if (i != NUM_QUIZZES - 1) {
                 csvEditor.append(",");
             }

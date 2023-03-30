@@ -29,9 +29,12 @@ public class FileJennySalary {
             FileReader fr = new FileReader(jennyFile);
             BufferedReader csvReader = new BufferedReader(fr);
             String week;
-            while ((week = csvReader.readLine()) != null) {
-                String[] hoursWorked = week.split(",");
+            int weekCount = 0;
 
+            while ((week = csvReader.readLine()) != null) {
+                String[] hoursWorkedPerDay = week.split(",");
+
+                weekCount++;
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error 404: File not Found");
@@ -41,14 +44,25 @@ public class FileJennySalary {
 
     }
 
+    // computing for weekdays
     // important to note: week is Sunday, ..., Saturday
     // Meaning that weekdays are at indices 1 to 5
-    static double computeWeekdaySalary(String[] hoursWorked) {
+    static double computeWeekdaySalary(String[] hoursWorkedPerDay) {
+        int hoursWorkedWeekTotal = 0;
+        double salaryForWeek = 0;
 
-        // for (int i=1; i<6; i++) {
-        // hoursWorked
-        // }
-        return 1;
+        for (int i = 1; i < 6; i++) {
+            int hoursWorked = Integer.parseInt(hoursWorkedPerDay[i]);
+            // Base
+            salaryForWeek += hoursWorked * Salary.BASE_RATE.getRate();
+            // Overtime
+            salaryForWeek += Math.max(hoursWorked - 8, 0) * Salary.OT_RATE.getRate();
+            hoursWorkedWeekTotal += hoursWorked;
+        }
+        if (hoursWorkedWeekTotal > 40) {
+            salaryForWeek += (hoursWorkedWeekTotal - 40) * Salary.HOURS_BEYOND_40.getRate();
+        }
+        return salaryForWeek;
     }
 }
 

@@ -23,6 +23,16 @@ import java.io.*;
 public class FileJennySalary {
 
     public static void main(String[] args) {
+        File jennyFile = new File("File_Handling\\Handleables\\Jenny_WeeklyHours.csv");
+        try {
+            FileReader fr = new FileReader(jennyFile);
+            BufferedReader csvReader = new BufferedReader(fr);
+            String week = csvReader.readLine();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error 404: File not Found");
+        } catch (IOException e) {
+            System.out.println();
+        }
 
     }
 }

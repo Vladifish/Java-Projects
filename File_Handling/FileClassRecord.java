@@ -19,9 +19,10 @@ public class FileClassRecord extends JOptionPane {
             if (className == null) // null is the exit and cancel button
                 System.exit(0);
 
-            String path = "File_Handling/" + className + ".csv"; // edit your path, mine is like this so it might
-                                                                 // not
-                                                                 // work for everyone
+            String path = "File_Handling/Handleables/" + className + ".csv"; // edit your path, mine is like this so it
+                                                                             // might
+            // not
+            // work for everyone
             File classRecord = new File(path);
 
             try {

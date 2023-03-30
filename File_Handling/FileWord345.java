@@ -13,10 +13,10 @@ import javax.swing.text.AbstractDocument.Content;
 // e. display the contents of word3.txt, word4.txt, and word5.txt
 public class FileWord345 {
     public static void main(String[] args) {
-        File file = new File("File_Handling/test.txt");
-        File three_letters = new File("File_Handling/word3.txt");
-        File four_letters = new File("File_Handling/word4.txt");
-        File five_letters = new File("File_Handling/word5.txt");
+        File file = new File("File_Handling/Handleables/test.txt");
+        File three_letters = new File("File_Handling/Handleables/word3.txt");
+        File four_letters = new File("File_Handling/Handleables/word4.txt");
+        File five_letters = new File("File_Handling/Handleables/word5.txt");
         try {
             FileReader fr = new FileReader(file);
             BufferedReader fileReader = new BufferedReader(fr);

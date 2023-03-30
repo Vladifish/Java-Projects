@@ -4,8 +4,10 @@ package File_Handling;
 // Conditions:
 // Base Rate $10
 // Overtime $1.50 >8 hrs
-// Bonus: +12% on Saturday, +50% on Sunday
+// Bonus: +125% on Saturday, +50% on Sunday
+// I have no idea how the sunday bonus works
 // Saturday and Sunday are not counted in the 40hr week
+// >40 hrs * $2.5 hr
 
 // Given:
 // hrs. worked each day in a week Format (Sunday, ..., Saturday)
@@ -35,7 +37,7 @@ public class FileJennySalary {
             while ((week = csvReader.readLine()) != null) {
                 String[] hoursWorkedPerDay = week.split(",");
                 System.out.print("Week #" + (weekCount + 1) + ": ");
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 7; i++) {
                     System.out.printf("%2s, ", hoursWorkedPerDay[i]);
                 }
                 System.out.println();
@@ -85,7 +87,7 @@ public class FileJennySalary {
 
             double weekendBonus = 1;
             if (i == 0) {
-                weekendBonus = Salary.SUNDAY_BONUS.getRate();
+                weekendBonus = Salary.SUNDAY_BONUS.getRate(); // current, $202 dagdag ng sunday
             } else if (i == 6) {
                 weekendBonus = Salary.SATURDAY_BONUS.getRate();
             }
@@ -106,7 +108,7 @@ public class FileJennySalary {
 
 enum Salary {
     BASE_RATE(10), OT_RATE(1.50), HOURS_BEYOND_40(2.50),
-    SATURDAY_BONUS(1.12), SUNDAY_BONUS(1.12);
+    SATURDAY_BONUS(2.25), SUNDAY_BONUS(1.96); // issue in sunday bonus
 
     private double rate;
 

@@ -22,4 +22,22 @@ import java.io.*;
 
 public class FileJennySalary {
 
+    public static void main(String[] args) {
+
+    }
+}
+
+enum Salary {
+    BASE_RATE(10), OT_RATE(1.50),
+    SATURDAY_BONUS(1.12), SUNDAY_BONUS(1.12);
+
+    private double rate;
+
+    Salary(double rate) {
+        this.rate = rate;
+    }
+
+    public double getRate() {
+        return rate;
+    }
 }

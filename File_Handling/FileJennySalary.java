@@ -24,10 +24,15 @@ public class FileJennySalary {
 
     public static void main(String[] args) {
         File jennyFile = new File("File_Handling\\Handleables\\Jenny_WeeklyHours.csv");
+        double[] weeklySalary = new double[5];
         try {
             FileReader fr = new FileReader(jennyFile);
             BufferedReader csvReader = new BufferedReader(fr);
-            String week = csvReader.readLine();
+            String week;
+            while ((week = csvReader.readLine()) != null) {
+                String[] hoursWorked = week.split(",");
+
+            }
         } catch (FileNotFoundException e) {
             System.out.println("Error 404: File not Found");
         } catch (IOException e) {
@@ -35,10 +40,20 @@ public class FileJennySalary {
         }
 
     }
+
+    // important to note: week is Sunday, ..., Saturday
+    // Meaning that weekdays are at indices 1 to 5
+    static double computeWeekdaySalary(String[] hoursWorked) {
+
+        // for (int i=1; i<6; i++) {
+        // hoursWorked
+        // }
+        return 1;
+    }
 }
 
 enum Salary {
-    BASE_RATE(10), OT_RATE(1.50),
+    BASE_RATE(10), OT_RATE(1.50), HOURS_BEYOND_40(2.50),
     SATURDAY_BONUS(1.12), SUNDAY_BONUS(1.12);
 
     private double rate;

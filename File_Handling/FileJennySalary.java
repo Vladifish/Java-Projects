@@ -33,6 +33,7 @@ public class FileJennySalary {
 
             while ((week = csvReader.readLine()) != null) {
                 String[] hoursWorkedPerDay = week.split(",");
+                weeklySalary[weekCount] = computeWeekdaySalary(hoursWorkedPerDay);
 
                 weekCount++;
             }
@@ -44,25 +45,30 @@ public class FileJennySalary {
 
     }
 
-    // computing for weekdays
-    // important to note: week is Sunday, ..., Saturday
-    // Meaning that weekdays are at indices 1 to 5
+    /**
+     * Computing for weekdays
+     * important to note: A Week is Sunday, ..., Saturday
+     * Meaning that weekdays are at indices 1 to 5
+     * 
+     * @param hoursWorkedPerDay
+     * @return the total salary for the weekdays
+     */
     static double computeWeekdaySalary(String[] hoursWorkedPerDay) {
         int hoursWorkedWeekTotal = 0;
-        double salaryForWeek = 0;
+        double salaryForWeekdays = 0;
 
         for (int i = 1; i < 6; i++) {
             int hoursWorked = Integer.parseInt(hoursWorkedPerDay[i]);
             // Base
-            salaryForWeek += hoursWorked * Salary.BASE_RATE.getRate();
+            salaryForWeekdays += hoursWorked * Salary.BASE_RATE.getRate();
             // Overtime
-            salaryForWeek += Math.max(hoursWorked - 8, 0) * Salary.OT_RATE.getRate();
+            salaryForWeekdays += Math.max(hoursWorked - 8, 0) * Salary.OT_RATE.getRate();
             hoursWorkedWeekTotal += hoursWorked;
         }
         if (hoursWorkedWeekTotal > 40) {
-            salaryForWeek += (hoursWorkedWeekTotal - 40) * Salary.HOURS_BEYOND_40.getRate();
+            salaryForWeekdays += (hoursWorkedWeekTotal - 40) * Salary.HOURS_BEYOND_40.getRate();
         }
-        return salaryForWeek;
+        return salaryForWeekdays;
     }
 }
 

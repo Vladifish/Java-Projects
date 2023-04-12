@@ -74,10 +74,10 @@ public class FileJennySalary {
      * Meaning that weekdays are at indices 1 to 5
      * 
      * @param hoursWorkedPerDay
-     * @return the total salary for the weekdays
+     * @return the total salary for the week
      */
     static double computeWeekSalary(String[] hoursWorkedPerDay) throws InvalidWorkHoursException {
-        int hoursWorkedWeekends = 0;
+        int hoursWorkedWeekdays = 0;
         double salaryForWeek = 0;
 
         for (int i = 0; i < 7; i++) {
@@ -97,10 +97,10 @@ public class FileJennySalary {
             // Overtime
             salaryForWeek += Math.max(hoursWorked - 8, 0) * Salary.OT_RATE.getRate() * weekendBonus;
             if (i != 0 && i != 6)
-                hoursWorkedWeekends += hoursWorked;
+                hoursWorkedWeekdays += hoursWorked;
         }
-        if (hoursWorkedWeekends > 40) {
-            salaryForWeek += (hoursWorkedWeekends - 40) * Salary.HOURS_BEYOND_40.getRate();
+        if (hoursWorkedWeekdays > 40) {
+            salaryForWeek += (hoursWorkedWeekdays - 40) * Salary.HOURS_BEYOND_40.getRate();
         }
         return salaryForWeek;
     }

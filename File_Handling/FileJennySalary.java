@@ -6,7 +6,8 @@ package File_Handling;
 // Overtime $1.50 >8 hrs
 // Bonus: +125% on Saturday, +50% on Sunday
 // I have no idea how the sunday bonus works
-// Saturday and Sunday are not counted in the 40hr week
+// The bonuses for Saturday and Sunday are not counted in the 40hr week 
+// but the hours worked still apply
 // >40 hrs * $2.5 hr
 
 // Given:
@@ -21,7 +22,6 @@ package File_Handling;
 // 5 sets of data
 
 import java.io.*;
-import java.util.InputMismatchException;
 
 public class FileJennySalary {
 
@@ -77,7 +77,7 @@ public class FileJennySalary {
      * @return the total salary for the week
      */
     static double computeWeekSalary(String[] hoursWorkedPerDay) throws InvalidWorkHoursException {
-        int hoursWorkedWeekdays = 0;
+        int hoursWorkedWeek = 0;
         double salaryForWeek = 0;
 
         for (int i = 0; i < 7; i++) {
@@ -87,20 +87,19 @@ public class FileJennySalary {
 
             double weekendBonus = 1;
             if (i == 0) {
-                weekendBonus = Salary.SUNDAY_BONUS.getRate(); // current, $202 dagdag ng sunday
+                weekendBonus += Salary.SUNDAY_BONUS.getRate(); // current, $202 dagdag ng sunday
             } else if (i == 6) {
-                weekendBonus = Salary.SATURDAY_BONUS.getRate();
+                weekendBonus += Salary.SATURDAY_BONUS.getRate();
             }
 
             // Base
             salaryForWeek += hoursWorked * Salary.BASE_RATE.getRate() * weekendBonus;
             // Overtime
             salaryForWeek += Math.max(hoursWorked - 8, 0) * Salary.OT_RATE.getRate() * weekendBonus;
-            if (i != 0 && i != 6)
-                hoursWorkedWeekdays += hoursWorked;
+            hoursWorkedWeek += hoursWorked;
         }
-        if (hoursWorkedWeekdays > 40) {
-            salaryForWeek += (hoursWorkedWeekdays - 40) * Salary.HOURS_BEYOND_40.getRate();
+        if (hoursWorkedWeek > 40) {
+            salaryForWeek += (hoursWorkedWeek - 40) * Salary.HOURS_BEYOND_40.getRate();
         }
         return salaryForWeek;
     }
@@ -108,7 +107,7 @@ public class FileJennySalary {
 
 enum Salary {
     BASE_RATE(10), OT_RATE(1.50), HOURS_BEYOND_40(2.50),
-    SATURDAY_BONUS(2.25), SUNDAY_BONUS(1.96); // issue in sunday bonus
+    SATURDAY_BONUS(1.25), SUNDAY_BONUS(0.5); // issue in sunday bonus
 
     private double rate;
 

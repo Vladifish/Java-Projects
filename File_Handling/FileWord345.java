@@ -3,8 +3,6 @@ package File_Handling;
 
 import java.io.*;
 
-import javax.swing.text.AbstractDocument.Content;
-
 // Write a program that will perform the following:
 // a. read a text file (filename: test.txt)
 // b. find all 3-letter words in the text file and store it in “word3.txt”

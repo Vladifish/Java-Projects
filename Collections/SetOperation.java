@@ -2,7 +2,7 @@ package Collections;
 
 import java.util.*;
 
-public class SetOperation { // TODO: Input Validation
+public class SetOperation {
 
     private static String MENU = """
             ---------------------------------------
@@ -37,79 +37,79 @@ public class SetOperation { // TODO: Input Validation
 
             int menuDecision = validate(menuOptions);
             if (menuDecision == 1) {
-                System.out.println("Set A or B?");
-                char chosenSet = console.next().toUpperCase().charAt(0);
                 System.out.println("Input element to add:");
                 String el = console.next();
 
-                boolean added;
-                if (chosenSet == 'A')
-                    added = A.add(el); // returns true if the value is unique
-                else
-                    added = B.add(el);
-
-                if (added)
+                if (A.add(el))
                     System.out.println("Successfully Added Element to Set");
                 else
                     System.out.println("Element Already in Set");
-            } // end of menuDecision 1
-            else if (menuDecision == 2) {
-                System.out.println("Set A or B?");
-                char chosenSet = console.next().toUpperCase().charAt(0);
+
+            } else if (menuDecision == 2) {
+                System.out.println("Input element to add:");
+                String el = console.next();
+
+                if (B.add(el))
+                    System.out.println("Successfully Added Element to Set");
+                else
+                    System.out.println("Element Already in Set");
+
+            } else if (menuDecision == 3) {
                 System.out.println("Input element to remove:");
                 String el = console.next();
 
-                boolean removed;
-                if (chosenSet == 'A')
-                    removed = A.remove(el); // returns true if the value is unique
-                else
-                    removed = B.remove(el);
-
-                if (removed)
+                if (A.remove(el))
                     System.out.println("Successfully Removed Element in Set");
                 else
                     System.out.println("Element Not in Set");
-            } // end of menuDecision 2
-            else if (menuDecision == 3) {
-                System.out.println("Specify which set to display:");
-                char chosenSet = console.next().toUpperCase().charAt(0);
 
-                if (chosenSet == 'A')
-                    System.out.println("A=" + Operations.<String>display(A));
+            } else if (menuDecision == 4) {
+                System.out.println("Input element to remove:");
+                String el = console.next();
+
+                if (B.remove(el))
+                    System.out.println("Successfully Removed Element in Set");
                 else
-                    System.out.println("B=" + Operations.<String>display(B));
-            } // end of menuDecision 3
-            else if (menuDecision == 4) {
+                    System.out.println("Element Not in Set");
+
+            } else if (menuDecision == 5) {
+                System.out.println("A=" + Operations.<String>display(A));
+
+            } else if (menuDecision == 6) {
+                System.out.println("B=" + Operations.<String>display(B));
+
+            } else if (menuDecision == 7) {
                 HashSet<String> union = Operations.<String>union(A, B);
                 System.out.println("A U B = " + Operations.<String>display(union));
-            } // end of menu decision 4
-            else if (menuDecision == 5) {
+
+            } else if (menuDecision == 8) {
                 HashSet<String> intersection = Operations.<String>intersection(A, B);
                 System.out.println("A intersection B = " + Operations.<String>display(intersection));
-            } // end of menu decision 5
-            else if (menuDecision == 6) {
+
+            } else if (menuDecision == 9) {
                 HashSet<String> subtracted = Operations.<String>subtract(A, B);
                 System.out.println("A - B = " + Operations.<String>display(subtracted));
-            } // end of menu decision 6
-            else if (menuDecision == 7) {
+
+            } else if (menuDecision == 10) {
                 HashSet<String> subtracted = Operations.<String>subtract(B, A);
                 System.out.println("B - A = " + Operations.<String>display(subtracted));
-            } // end of decision 7
-            else if (menuDecision == 8) {
+
+            } else if (menuDecision == 11) {
                 if (Operations.<String>isSubsetOf(A, B))
                     System.out.println("A is a subset of B");
                 else
                     System.out.println("A is not a subset of B");
-            } // end of decision 8
-            else if (menuDecision == 9) {
+
+            } else if (menuDecision == 12) {
                 if (Operations.<String>isSubsetOf(B, A))
                     System.out.println("B is a subset of A");
                 else
                     System.out.println("B is not a subset of A");
+
             } // end of decision 9
             System.out.println();
 
-            if (menuDecision == 10)
+            if (menuDecision == 13)
                 break;
 
         } // end of the program loop

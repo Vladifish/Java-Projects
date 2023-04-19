@@ -35,26 +35,27 @@ public class Serialization {
     static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.print("Input which section that would be edited:");
-        String section = console.next();
-        StringBuilder filePath = new StringBuilder();
-        filePath.append("File_Handling/Handleables/"); // comment out later
-        filePath.append(section + ".csv");
+
         while (true) {
             final int MenuOptions[] = { 1, 2, 3, 4, 5 };
             int input = validator(MenuOptions);
             if (input == 5)
                 break;
 
-            File classRecord;
+            if (input == 1) {
+                System.out.print("Input which section that would be edited:");
+                String section = console.next();
+                StringBuilder filePath = new StringBuilder();
+                filePath.append("File_Handling/Handleables/"); // comment out later
+                filePath.append(section + ".csv");
+            }
+            // File classRecord = new File();
         }
     }
 
     private static int validator(int[] menuOptions) {
         return 0;
     }
-
-    private static void Edit
 
 }
 

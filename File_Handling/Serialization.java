@@ -8,10 +8,8 @@ package File_Handling;
 
 // 
 // ➢ When 2 is chosen, ask the user for the ID# and quiz number that he/she
-// wants to edit
-// then allow the user to edit the score. If Student ID# is not in the record, d
-// splay the
-// appropriate prompt and ask the user to enter an ID# again.
+// wants to edit then allow the user to edit the score. If Student ID# is not in the record, 
+// display the appropriate prompt and ask the user to enter an ID# again.
 
 // ➢ When 3 is chosen, read the Class Record file and display it on the scr
 // en in tabular form.
@@ -32,6 +30,28 @@ package File_Handling;
 
 public class Serialization {
 
+    public static void main(String[] args) {
+        
+    }
+
 }
 
+class Student {
+    private String name = "Juan Dela Cruz";
+    final byte ID_NUMBER; // went with bits, since the ID_NUMBER would only be 4 bits
+    private int[] quizzes;
 
+    Student(String name, byte id, int quiz1, int quiz2, int quiz3) {
+        quizzes = new int[3];
+        this.name = name;
+        ID_NUMBER = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getQuizScore(int quizNum) {
+        return quizzes[quizNum];
+    }
+}

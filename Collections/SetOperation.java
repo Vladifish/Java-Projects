@@ -2,7 +2,7 @@ package Collections;
 
 import java.util.*;
 
-public class SetOperation {
+public class SetOperation { // TODO: Input Validation
 
     private static String MENU = """
             Choose from one of the given operations
@@ -33,16 +33,53 @@ public class SetOperation {
                 char chosenSet = console.next().toUpperCase().charAt(0);
                 System.out.println("Input element to add:");
                 String el = console.next();
-                if (chosenSet == 'A')
-                    A.add(el);
-                else
-                    B.add(el);
-            } // end of menuDecision 1
-            else if (menuDecision == 13) // gives visual clarity
-                break;
-        }
 
-    }
+                boolean added;
+                if (chosenSet == 'A')
+                    added = A.add(el); // returns true if the value is unique
+                else
+                    added = B.add(el);
+
+                if (added)
+                    System.out.println("Successfully Added Element to Set");
+                else
+                    System.out.println("Element Already in Set");
+            } // end of menuDecision 1
+            else if (menuDecision == 2) {
+                System.out.println("Set A or B?");
+                char chosenSet = console.next().toUpperCase().charAt(0);
+                System.out.println("Input element to remove:");
+                String el = console.next();
+
+                boolean removed;
+                if (chosenSet == 'A')
+                    removed = A.remove(el); // returns true if the value is unique
+                else
+                    removed = B.remove(el);
+
+                if (removed)
+                    System.out.println("Successfully Removed Element in Set");
+                else
+                    System.out.println("Element Not in Set");
+            } // end of menuDecision 2
+            else if (menuDecision == 3) {
+                System.out.println("Specify which set to display:");
+                char chosenSet = console.next().toUpperCase().charAt(0);
+
+                if (chosenSet == 'A')
+                    System.out.println(Operations.<String>display(A));
+                else
+                    System.out.println(Operations.<String>display(B));
+            } // end of menuDecision 3
+
+            System.out.println();
+
+            if (menuDecision == 10)
+                break;
+
+        } // end of the program loop
+        System.out.println("EXITING: Good Bye!");
+    } // end of void-main
 }
 
 // Menu
@@ -61,24 +98,27 @@ public class SetOperation {
 // 13. Quit
 
 class Operations {
-    public static <T> HashSet<T> union(HashSet<T> a, HashSet<T> b) {
+    public static <T> HashSet<T> union(HashSet<T> A, HashSet<T> B) {
         // a modified merge algorithm, since we cannot access the individual contents /
         // indices
         HashSet<T> output = new HashSet<>();
-        for (T el : a) {
+        for (T el : A) {
             output.add(el);
         }
-        for (T el : b) {
-            if (!a.contains(el))
+        for (T el : B) {
+            if (!A.contains(el))
                 output.add(el);
         }
         return output;
     }
 
-    public static <T> String display(HashSet<T> a) {
+    public static <T> String display(HashSet<T> A) {
+        if (A.isEmpty())
+            return "[ ]";
+
         StringBuilder output = new StringBuilder();
         output.append("[ ");
-        for (T el : a) {
+        for (T el : A) {
             output.append(el + " ");
         }
         output.append("]");

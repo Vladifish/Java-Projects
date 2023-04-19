@@ -4,6 +4,11 @@ import java.util.*;
 
 public class SetOperation {
     public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("deez");
+        HashSet<String> set1 = new HashSet<>();
+        set.add("deez");
+        set.add("nutz");
 
     }
 }
@@ -24,17 +29,16 @@ public class SetOperation {
 // 13. Quit
 
 class Operations {
-    public static <T> String union(HashSet<T> a, HashSet<T> b) {
+    public static <T> HashSet<T> union(HashSet<T> a, HashSet<T> b) {
         // essentially the merge algorithm in merge sort
-        StringBuilder output = new StringBuilder("[ ");
+        HashSet<T> output = new HashSet<>();
         for (T el : a) {
-            output.append(el.toString() + " ");
+            output.add(el);
         }
         for (T el : b) {
             if (!a.contains(el))
-                output.append(el + " ");
+                output.add(el);
         }
-        output.append(" ]");
-        return output.toString();
+        return output;
     }
 }

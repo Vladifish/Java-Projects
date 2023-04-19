@@ -5,29 +5,37 @@ import java.util.*;
 public class SetOperation { // TODO: Input Validation
 
     private static String MENU = """
+            ---------------------------------------
             Choose from one of the given operations
             Given Sets: A, B
             ---------------------------------------
-            1.  Add element to a set
-            2.  Remove element from a set
-            3.  Display a set
-            4.  Display Union of A and B
-            5.  Display Intersection of A and B
-            6.  Display A - B
-            7.  Display B - A
-            8.  Check if A is a subset of B
-            9.  Check if B is a subset of A
-            10. Quit
-            ---------------------------------------
-                """;
+            1.  Add element to Set A
+            2.  Add element to Set B
+            3.  Remove element from Set A
+            4.  Remove element from Set B
+            5.  Display Set A
+            6.  Display Set B
+            7.  Display Union of A and B
+            8.  Display Intersection of A and B
+            9.  Display A - B
+            10. Display B - A
+            11. Check if A is a subset of B
+            12. Check if B is a subset of A
+            13. Quit
+            ---------------------------------------""";
+    static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
         HashSet<String> A = new HashSet<>();
         HashSet<String> B = new HashSet<>();
-        Scanner console = new Scanner(System.in);
+        int[] menuOptions = new int[13];
+
+        for (int i = 0; i < 13; i++)
+            menuOptions[i] = i + 1;
         while (true) {
             System.out.println(MENU);
-            int menuDecision = console.nextInt();
+
+            int menuDecision = validate(menuOptions);
             if (menuDecision == 1) {
                 System.out.println("Set A or B?");
                 char chosenSet = console.next().toUpperCase().charAt(0);
@@ -107,6 +115,24 @@ public class SetOperation { // TODO: Input Validation
         } // end of the program loop
         System.out.println("EXITING: Good Bye!");
     } // end of void-main
+
+    private static int validate(int[] options) {
+        while (true) {
+            try {
+                int input = Integer.parseInt(console.next());
+                for (int item : options) {
+                    if (item == input)
+                        return item;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERROR: Incompatible Type");
+            } catch (NumberFormatException e) {
+                System.out.println("ERROR: Input must be a number");
+            } catch (Error e) {
+                System.out.println(e);
+            }
+        }
+    }
 }
 
 // Menu

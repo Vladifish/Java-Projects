@@ -31,6 +31,12 @@ public class SetOperation {
             if (menuDecision == 1) {
                 System.out.println("Set A or B?");
                 char chosenSet = console.next().toUpperCase().charAt(0);
+                System.out.println("Input element to add:");
+                String el = console.next();
+                if (chosenSet == 'A')
+                    A.add(el);
+                else
+                    B.add(el);
             } // end of menuDecision 1
             else if (menuDecision == 13) // gives visual clarity
                 break;

@@ -79,6 +79,26 @@ public class SetOperation { // TODO: Input Validation
                 HashSet<String> intersection = Operations.<String>intersection(A, B);
                 System.out.println("A intersection B = " + Operations.<String>display(intersection));
             } // end of menu decision 5
+            else if (menuDecision == 6) {
+                HashSet<String> subtracted = Operations.<String>subtract(A, B);
+                System.out.println("A - B = " + Operations.<String>display(subtracted));
+            } // end of menu decision 6
+            else if (menuDecision == 7) {
+                HashSet<String> subtracted = Operations.<String>subtract(B, A);
+                System.out.println("B - A = " + Operations.<String>display(subtracted));
+            } // end of decision 7
+            else if (menuDecision == 8) {
+                if (Operations.<String>isSubsetOf(A, B))
+                    System.out.println("A is a subset of B");
+                else
+                    System.out.println("A is not a subset of B");
+            } // end of decision 8
+            else if (menuDecision == 9) {
+                if (Operations.<String>isSubsetOf(B, A))
+                    System.out.println("B is a subset of A");
+                else
+                    System.out.println("B is not a subset of A");
+            } // end of decision 9
             System.out.println();
 
             if (menuDecision == 10)
@@ -141,5 +161,24 @@ class Operations {
                 output.add(el);
         }
         return output;
+    }
+
+    public static <T> HashSet<T> subtract(HashSet<T> A, HashSet<T> B) {
+        // a modified merge algorithm, since we cannot access the individual contents /
+        // indices
+        HashSet<T> output = new HashSet<>();
+        for (T el : A) {
+            if (!B.contains(el))
+                output.add(el);
+        }
+        return output;
+    }
+
+    public static <T> boolean isSubsetOf(HashSet<T> A, HashSet<T> B) {
+        for (T el : A) { // all elements of A must be in B, for it to be considered a subset
+            if (!B.contains(el))
+                return false;
+        }
+        return true;
     }
 }

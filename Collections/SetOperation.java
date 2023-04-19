@@ -3,12 +3,38 @@ package Collections;
 import java.util.*;
 
 public class SetOperation {
+
+    private static String MENU = """
+            Choose from one of the given operations
+            Given Sets: A, B
+            ---------------------------------------
+            1.  Add element to a set
+            2.  Remove element from a set
+            3.  Display a set
+            4.  Display Union of A and B
+            5.  Display Intersection of A and B
+            6.  Display A – B
+            7. Display B – A
+            8. Check if A is a subset of B
+            9. Check if B is a subset of A
+            10. Quit
+            ---------------------------------------
+                """;
+
     public static void main(String[] args) {
-        HashSet<String> set = new HashSet<>();
-        set.add("deez");
-        HashSet<String> set1 = new HashSet<>();
-        set.add("deez");
-        set.add("nutz");
+        HashSet<String> A = new HashSet<>();
+        HashSet<String> B = new HashSet<>();
+        Scanner console = new Scanner(System.in);
+        while (true) {
+            System.out.println(MENU);
+            int menuDecision = console.nextInt();
+            if (menuDecision == 1) {
+                System.out.println("Set A or B?");
+                char chosenSet = console.next().toUpperCase().charAt(0);
+            } // end of menuDecision 1
+            else if (menuDecision == 13) // gives visual clarity
+                break;
+        }
 
     }
 }
@@ -30,7 +56,8 @@ public class SetOperation {
 
 class Operations {
     public static <T> HashSet<T> union(HashSet<T> a, HashSet<T> b) {
-        // essentially the merge algorithm in merge sort
+        // a modified merge algorithm, since we cannot access the individual contents /
+        // indices
         HashSet<T> output = new HashSet<>();
         for (T el : a) {
             output.add(el);
@@ -40,5 +67,15 @@ class Operations {
                 output.add(el);
         }
         return output;
+    }
+
+    public static <T> String display(HashSet<T> a) {
+        StringBuilder output = new StringBuilder();
+        output.append("[ ");
+        for (T el : a) {
+            output.append(el + " ");
+        }
+        output.append("]");
+        return output.toString();
     }
 }

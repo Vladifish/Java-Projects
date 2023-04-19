@@ -13,10 +13,10 @@ public class SetOperation { // TODO: Input Validation
             3.  Display a set
             4.  Display Union of A and B
             5.  Display Intersection of A and B
-            6.  Display A – B
-            7. Display B – A
-            8. Check if A is a subset of B
-            9. Check if B is a subset of A
+            6.  Display A - B
+            7.  Display B - A
+            8.  Check if A is a subset of B
+            9.  Check if B is a subset of A
             10. Quit
             ---------------------------------------
                 """;
@@ -67,11 +67,18 @@ public class SetOperation { // TODO: Input Validation
                 char chosenSet = console.next().toUpperCase().charAt(0);
 
                 if (chosenSet == 'A')
-                    System.out.println(Operations.<String>display(A));
+                    System.out.println("A=" + Operations.<String>display(A));
                 else
-                    System.out.println(Operations.<String>display(B));
+                    System.out.println("B=" + Operations.<String>display(B));
             } // end of menuDecision 3
-
+            else if (menuDecision == 4) {
+                HashSet<String> union = Operations.<String>union(A, B);
+                System.out.println("A U B = " + Operations.<String>display(union));
+            } // end of menu decision 4
+            else if (menuDecision == 5) {
+                HashSet<String> intersection = Operations.<String>intersection(A, B);
+                System.out.println("A intersection B = " + Operations.<String>display(intersection));
+            } // end of menu decision 5
             System.out.println();
 
             if (menuDecision == 10)
@@ -123,5 +130,16 @@ class Operations {
         }
         output.append("]");
         return output.toString();
+    }
+
+    public static <T> HashSet<T> intersection(HashSet<T> A, HashSet<T> B) {
+        // a modified merge algorithm, since we cannot access the individual contents /
+        // indices
+        HashSet<T> output = new HashSet<>();
+        for (T el : A) {
+            if (B.contains(el))
+                output.add(el);
+        }
+        return output;
     }
 }

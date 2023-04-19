@@ -1,6 +1,9 @@
 // Vladimir Gray P. Velazco 1CSC
 package File_Handling;
 
+import java.util.*;
+import java.io.*;
+
 // ➢ When 1 is chosen, ask the user to enter the number of students and allow the user to
 // enter the required data. The entered data must be saved permanently in a file(use
 // relative path). A Student class must be created with the following attributes : Name,
@@ -29,17 +32,36 @@ package File_Handling;
 // 
 
 public class Serialization {
+    static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
-        
+        System.out.print("Input which section that would be edited:");
+        String section = console.next();
+        StringBuilder filePath = new StringBuilder();
+        filePath.append("File_Handling/Handleables/"); // comment out later
+        filePath.append(section + ".csv");
+        while (true) {
+            final int MenuOptions[] = { 1, 2, 3, 4, 5 };
+            int input = validator(MenuOptions);
+            if (input == 5)
+                break;
+
+            File classRecord;
+        }
     }
+
+    private static int validator(int[] menuOptions) {
+        return 0;
+    }
+
+    private static void Edit
 
 }
 
 class Student {
     private String name = "Juan Dela Cruz";
-    final byte ID_NUMBER; // went with bits, since the ID_NUMBER would only be 4 bits
-    private int[] quizzes;
+    byte ID_NUMBER; // went with byte, since the ID_NUMBER would only be 4 bits
+    int[] quizzes;
 
     Student(String name, byte id, int quiz1, int quiz2, int quiz3) {
         quizzes = new int[3];

@@ -23,8 +23,18 @@ public class SetOperation {
 // 12. Check if B is a subset of A
 // 13. Quit
 
-class Operations<T> {
-    // static String union(HashSet<T> a, HashSet<T> b) {
-
-    // }
+class Operations {
+    public static <T> String union(HashSet<T> a, HashSet<T> b) {
+        // essentially the merge algorithm in merge sort
+        StringBuilder output = new StringBuilder("[ ");
+        for (T el : a) {
+            output.append(el.toString() + " ");
+        }
+        for (T el : b) {
+            if (!a.contains(el))
+                output.append(el + " ");
+        }
+        output.append(" ]");
+        return output.toString();
+    }
 }

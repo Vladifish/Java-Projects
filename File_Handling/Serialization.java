@@ -105,29 +105,33 @@ public class Serialization { // TODO: Text Formatting
 
             String studID = String.format("%04d", id);
             boolean found = false;
-            Student editedStudent = null;
+            int foundIndex = 0;
             try {
                 FileInputStream fInStream = new FileInputStream(classRecord);
                 ObjectInputStream objInStream = new ObjectInputStream(fInStream);
-                while (fInStream.available() > 0 && !found) { // reads until end of line
-                    editedStudent = (Student) objInStream.readObject();
-                    found = studID.equals(editedStudent.getIDString());
+                Student[] editedRecord = (Student[]) objInStream.readObject();
+                for (int i = 0; i < editedRecord.length; i++) { // reads until end of line
+                    Student tempStudent = (Student) objInStream.readObject();
+                    found = studID.equals(tempStudent.getIDString());
+                    if (found)
+                        foundIndex = i;
                 }
                 if (!found)
                     continue; // goes back to start of loop
 
                 // Unreachable if the ID is not in the file
-                System.out.println("Input Quiz # then Quiz Score:");
+                System.out.println("Input Quiz #:");
                 int quizNumber = (int) validator(1, 3);
+                System.out.println("Input New Quiz Score:");
                 double score = validator(0, 100);
-                editedStudent.setQuizScore(quizNumber, score);
+                editedRecord[foundIndex].setQuizScore(quizNumber, score);
 
                 fInStream.close();
                 objInStream.close();
 
                 // Adds Updated
-                ObjectOutputStream fOutStream = new ObjectOutputStream(new FileOutputStream(classRecord, true)); // appends
-                fOutStream.writeObject(editedStudent);
+                ObjectOutputStream fOutStream = new ObjectOutputStream(new FileOutputStream(classRecord, false)); // appends
+                fOutStream.writeObject(editedRecord);
                 fOutStream.close();
             } catch (FileNotFoundException e) {
                 System.out.println("ERROR: File not found");

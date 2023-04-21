@@ -37,24 +37,41 @@ public class Serialization {
     public static void main(String[] args) {
 
         while (true) {
-            final int MenuOptions[] = { 1, 2, 3, 4, 5 };
-            int input = validator(MenuOptions);
+            System.out.println("MENU:");
+            int input = validator(/* min: */1, /* max: */ 5);
+            System.out.println(input);
             if (input == 5)
                 break;
 
+            File classRecord = new File("");
             if (input == 1) {
                 System.out.print("Input which section that would be edited:");
                 String section = console.next();
                 StringBuilder filePath = new StringBuilder();
                 filePath.append("File_Handling/Handleables/"); // comment out later
-                filePath.append(section + ".csv");
+                filePath.append(section + ".txt");
+                classRecord = new File(filePath.toString());
+
             }
             // File classRecord = new File();
         }
     }
 
-    private static int validator(int[] menuOptions) {
-        return 0;
+    private static int validator(int min, int max) {
+        while (true) {
+            try {
+                int input = Integer.parseInt(console.next());
+                if (input >= min && input <= max)
+                    return input;
+                throw new NumberNotInRangeException();
+            } catch (NumberNotInRangeException e) {
+                System.out.printf("ERROR: Must be a number between %d and %d\n", min, max);
+            } catch (NumberFormatException e) {
+                System.out.printf("ERROR: Must be a number between %d and %d\n", min, max);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
     }
 
 }
@@ -76,5 +93,15 @@ class Student {
 
     public int getQuizScore(int quizNum) {
         return quizzes[quizNum];
+    }
+}
+
+class NumberNotInRangeException extends Exception {
+    NumberNotInRangeException() {
+        System.err.println("ERROR: Number not in range");
+    }
+
+    NumberNotInRangeException(String message) {
+        super(message);
     }
 }

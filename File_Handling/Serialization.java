@@ -206,10 +206,7 @@ public class Serialization { // TODO: Text Formatting
         try {
             FileOutputStream fOut = new FileOutputStream(classRecord, append);
             ObjectOutputStream objOut = new ObjectOutputStream(fOut);
-            for (int i = 0; i < numStudents; i++) {
-                // Writes the student's serialized info to the record
-                objOut.writeObject(students[i]);
-            }
+            objOut.writeObject(students); // writes the entire array, so we get a more convenient read.
             objOut.close();
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File might be a directory, or does not exist");

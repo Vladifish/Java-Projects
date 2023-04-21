@@ -95,6 +95,7 @@ public class Serialization { // TODO: Text Formatting
         }
     }
 
+    // Appears to need more
     private static void editSpecificID(File classRecord) {
         while (true) {
             System.out.println("Input 4-digit ID# or -1 to return to menu");
@@ -106,10 +107,10 @@ public class Serialization { // TODO: Text Formatting
             boolean found = false;
             Student editedStudent = null;
             try {
-                FileInputStream fstream = new FileInputStream(classRecord);
-                ObjectInputStream objStream = new ObjectInputStream(fstream);
-                while (fstream.available() > 0 && !found) { // reads until end of line
-                    editedStudent = (Student) objStream.readObject();
+                FileInputStream fInStream = new FileInputStream(classRecord);
+                ObjectInputStream objInStream = new ObjectInputStream(fInStream);
+                while (fInStream.available() > 0 && !found) { // reads until end of line
+                    editedStudent = (Student) objInStream.readObject();
                     found = studID.equals(editedStudent.getIDString());
                 }
                 if (!found)
@@ -120,7 +121,14 @@ public class Serialization { // TODO: Text Formatting
                 int quizNumber = (int) validator(1, 3);
                 double score = validator(0, 100);
                 editedStudent.setQuizScore(quizNumber, score);
-                return;
+
+                fInStream.close();
+                objInStream.close();
+
+                // Adds Updated
+                ObjectOutputStream fOutStream = new ObjectOutputStream(new FileOutputStream(classRecord, true)); // appends
+                fOutStream.writeObject(editedStudent);
+                fOutStream.close();
             } catch (FileNotFoundException e) {
                 System.out.println("ERROR: File not found");
             } catch (IOException e) {

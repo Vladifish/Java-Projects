@@ -45,13 +45,24 @@ public class Serialization {
 
             File classRecord = new File("");
             if (input == 1) {
+                // specifies the file
                 System.out.print("Input which section that would be edited:");
                 String section = console.next();
                 StringBuilder filePath = new StringBuilder();
                 filePath.append("File_Handling/Handleables/"); // comment out later
                 filePath.append(section + ".txt");
                 classRecord = new File(filePath.toString());
-
+                // checks how many students to add
+                System.out.println("How many students records will you write?");
+                int numStudents = validator(1, 100);
+                System.out.println("Will you Append or Overwrite the file? Input 0 to Overwrite, 1 to Append:");
+                int append = validator(0, 1);
+                if (append == 0) { // overwriting
+                    System.out.println(
+                            "This action could delete all the information in the file? Press 0 to go back to menu");
+                    if (console.next().charAt(0) == '0')
+                        break; // goes back to the menu
+                }
             }
             // File classRecord = new File();
         }
@@ -74,11 +85,23 @@ public class Serialization {
         }
     }
 
+    /**
+     * <h1>Create Record</h1>
+     * Creates the record of a whole class
+     * Written Info: name, 4-digit ID#, 3 quiz scores
+     * 
+     * @param numStudents
+     * @param appending   1 for overwrite, 0 for append
+     */
+    private static void createRecord(int numStudents, int appending) {
+
+    }
+
 }
 
 class Student {
     private String name = "Juan Dela Cruz";
-    byte ID_NUMBER; // went with byte, since the ID_NUMBER would only be 4 bits
+    int ID_NUMBER;
     int[] quizzes;
 
     Student(String name, byte id, int quiz1, int quiz2, int quiz3) {

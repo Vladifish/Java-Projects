@@ -36,6 +36,7 @@ public class Serialization { // TODO: Text Formatting
 
     public static void main(String[] args) {
         File classRecord = new File("");
+        boolean fileChosen = false;
         while (true) {
             System.out.println("MENU:");
             System.out.println("1 - Edit/Create Class Record");
@@ -43,7 +44,7 @@ public class Serialization { // TODO: Text Formatting
             System.out.println("3 - Display Class Record");
             System.out.println("4 - Display Specific Student Record");
             System.out.println("5 - Exit Program");
-            int input = validator(/* min: */1, /* max: */ 5);
+            int input = (int) validator(/* min: */1, /* max: */ 5);
             if (input == 5)
                 break;
 
@@ -58,37 +59,82 @@ public class Serialization { // TODO: Text Formatting
 
                 // checks how many students to add
                 System.out.println("How many students records will you write (max 100)?");
-                int numStudents = validator(1, 100);
+                int numStudents = (int) validator(1, 100);
                 System.out.println("Will you Append or Overwrite the file? Input 0 to Overwrite, 1 to Append:");
                 boolean append = validator(0, 1) == 1;
                 if (append) { // overwriting
                     System.out.println(
-                            "This action could delete all the information in the file? Press 0 to go back to menu");
+                            "This action could delete all the information in the file? Press any key to continue or 0 to go back to menu");
                     if (console.next().charAt(0) == '0')
                         continue; // goes back to the menu
                 }
 
                 createRecord(classRecord, numStudents, append);
+                fileChosen = true;
             } // end of input == 1
             else if (input == 2) { // Edit Quiz Scores of a Specific ID
-                // Student Record Format:
-                // NAME: ::
-
+                if (!fileChosen) {
+                    System.out.println("No File Chosen, Returning to Menu");
+                    continue;
+                }
+                editSpecificID(classRecord);
             } // end of input == 2
             else if (input == 3) {
-
+                if (!fileChosen) {
+                    System.out.println("No File Chosen, Returning to Menu");
+                    continue;
+                }
             } // end of input == 3
             else if (input == 4) {
-
+                if (!fileChosen) {
+                    System.out.println("No File Chosen, Returning to Menu");
+                    continue;
+                }
             } // end of input == 4
               // File classRecord = new File();
         }
     }
 
-    private static int validator(int min, int max) {
+    private static void editSpecificID(File classRecord) {
+        while (true) {
+            System.out.println("Input 4-digit ID# or -1 to return to menu");
+            int id = (int) validator(-1, 9999);
+            if (id == -1) // guard-clause
+                return;
+
+            String studID = String.format("%04d", id);
+            boolean found = false;
+            Student editedStudent = null;
+            try {
+                FileInputStream fstream = new FileInputStream(classRecord);
+                ObjectInputStream objStream = new ObjectInputStream(fstream);
+                while (fstream.available() > 0 && !found) { // reads until end of line
+                    editedStudent = (Student) objStream.readObject();
+                    found = studID.equals(editedStudent.getIDString());
+                }
+                if (!found)
+                    continue; // goes back to start of loop
+
+                // Unreachable if the ID is not in the file
+                System.out.println("Input Quiz # then Quiz Score:");
+                int quizNumber = (int) validator(1, 3);
+                double score = validator(0, 100);
+                editedStudent.setQuizScore(quizNumber, score);
+                return;
+            } catch (FileNotFoundException e) {
+                System.out.println("ERROR: File not found");
+            } catch (IOException e) {
+                System.out.println("An error occured with the read file");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static double validator(int min, int max) {
         while (true) {
             try {
-                int input = Integer.parseInt(console.next());
+                double input = Double.parseDouble(console.next());
                 if (input >= min && input <= max)
                     return input;
                 throw new NumberNotInRangeException();
@@ -128,7 +174,7 @@ public class Serialization { // TODO: Text Formatting
             // Handling the 4 digit ID
             System.out.println("4-digit ID#: ");
             try {
-                students[i].setIDNumber(validator(0, 9999));
+                students[i].setIDNumber((int) validator(0, 9999));
             } catch (NumberNotInRangeException e) {
                 System.out.println(e); // should be unreachable, since the validator handles it already
             }
@@ -140,7 +186,7 @@ public class Serialization { // TODO: Text Formatting
             }
 
             // Check if the inputted information is correct
-            System.out.println("Is this satisfactory? Input 0 to redo operation");
+            System.out.println("Is this satisfactory? Input any key to continue or input 0 to redo operation");
             System.out.println(students[i]);
             if (console.next().charAt(0) == '0') {
                 i--;
@@ -192,10 +238,10 @@ class Student implements Serializable {
 
     @Override
     public String toString() {
-        String temp = String.format("NAME= %s :: ID#= %s :: ", name, getIDString());
+        String temp = String.format("NAME= %s::ID#= %s::", name, getIDString());
         StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            output.append("Quiz" + (i + 1) + "= " + quizzes[i] + " :: ");
+            output.append("Quiz" + (i + 1) + "= " + quizzes[i] + "::");
         }
         output.append("\n");
         return output.toString();

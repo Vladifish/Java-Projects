@@ -98,7 +98,6 @@ class Student {
 
 class NumberNotInRangeException extends Exception {
     NumberNotInRangeException() {
-        System.err.println("ERROR: Number not in range");
     }
 
     NumberNotInRangeException(String message) {

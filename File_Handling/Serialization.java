@@ -31,7 +31,7 @@ import java.io.*;
 
 // 
 
-public class Serialization {
+public class Serialization { // TODO: Formatting
     static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -55,8 +55,8 @@ public class Serialization {
                 System.out.println("How many students records will you write (max 100)?");
                 int numStudents = validator(1, 100);
                 System.out.println("Will you Append or Overwrite the file? Input 0 to Overwrite, 1 to Append:");
-                int append = validator(0, 1);
-                if (append == 0) { // overwriting
+                boolean append = validator(0, 1) == 1;
+                if (append) { // overwriting
                     System.out.println(
                             "This action could delete all the information in the file? Press 0 to go back to menu");
                     if (console.next().charAt(0) == '0')
@@ -95,30 +95,59 @@ public class Serialization {
      * @param numStudents could be from 1 to 100
      * @param appending   0 if overriding, 1 if appending
      */
-    private static void createRecord(File classRecord, int numStudents, int append) {
+    private static void createRecord(File classRecord, int numStudents, boolean append) {
+        Student[] students = new Student[numStudents];
         for (int i = 0; i < numStudents; i++) {
-            Student student = new Student();
+            students[i] = new Student();
+
+            // Student Name
             System.out.print("Student Name: ");
             console.nextLine(); // eats up trailing new-lines
-            student.name = console.nextLine();
+            students[i].name = console.nextLine();
+
+            // Handling the 4 digit ID
             System.out.println("4-digit ID#: ");
             try {
-                student.setIDNumber(validator(0, 9999));
+                students[i].setIDNumber(validator(0, 9999));
             } catch (NumberNotInRangeException e) {
                 System.out.println(e); // should be unreachable, since the validator handles it already
             }
+
+            // Quiz Scores
             System.out.println("Input the 3 Quiz Scores of Student:");
             for (int j = 0; j < 3; j++) {
-                student.setQuizScore(j, validator(0, 100));
+                students[i].setQuizScore(j, validator(0, 100));
             }
-            System.out.println("Is this satisfactory?");
-            System.out.println(student);
+
+            // Check if the inputted information is correct
+            System.out.println("Is this satisfactory? Input 0 to redo operation");
+            System.out.println(students[i]);
+            if (console.next().charAt(0) == '0') {
+                i--;
+                continue;
+            }
         }
+
+        // I handled this outside of the other for-loop to minimize the nesting
+        try {
+            FileOutputStream fOut = new FileOutputStream(classRecord, append);
+            ObjectOutputStream objOut = new ObjectOutputStream(fOut);
+            for (int i = 0; i < numStudents; i++) {
+                // Writes the student's serialized info to the record
+                objOut.writeObject(students[i]);
+            }
+            objOut.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR: File might be a directory, or does not exist");
+        } catch (IOException e) {
+            System.out.println("Error with handled file");
+        }
+
     }
 
 }
 
-class Student {
+class Student implements Serializable {
     String name = "Juan Dela Cruz";
     private int IDNumber;
     private double[] quizzes;
@@ -143,9 +172,10 @@ class Student {
 
     @Override
     public String toString() {
-        StringBuilder output = new StringBuilder(name + ": " + getIDString() + "\n");
+        String temp = String.format("NAME = %s :: ID# = %s ::\n", name, getIDString());
+        StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            output.append("Quiz " + (i + 1) + ": " + quizzes[i] + "\n");
+            output.append("Quiz " + (i + 1) + ": " + quizzes[i] + "::\n");
         }
         return output.toString();
     }
@@ -162,7 +192,7 @@ class Student {
     }
 }
 
-class NumberNotInRangeException extends Exception {
+class NumberNotInRangeException extends Exception { // this is defined twice in my file system so...
     NumberNotInRangeException() {
     }
 

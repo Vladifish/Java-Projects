@@ -31,23 +31,23 @@ import java.io.*;
 
 // 
 
-public class Serialization { // TODO: Formatting
+public class Serialization { // TODO: Text Formatting
     static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
         File classRecord = new File("");
         while (true) {
             System.out.println("MENU:");
-            System.out.println("1 - Select Class Record");
-            System.out.println("2 - Edit Quiz Score");
-            System.out.println("3 - Select Class Record");
-            System.out.println("4 - Select Class Record");
+            System.out.println("1 - Edit/Create Class Record");
+            System.out.println("2 - Edit Quiz Scores of a Student ID#");
+            System.out.println("3 - Display Class Record");
+            System.out.println("4 - Display Specific Student Record");
             System.out.println("5 - Exit Program");
             int input = validator(/* min: */1, /* max: */ 5);
             if (input == 5)
                 break;
 
-            if (input == 1) {
+            if (input == 1) { //
                 // specifies the file
                 System.out.print("Input the file name of the class record to be edited:");
                 String section = console.next();
@@ -70,6 +70,17 @@ public class Serialization { // TODO: Formatting
 
                 createRecord(classRecord, numStudents, append);
             } // end of input == 1
+            else if (input == 2) { // Edit Quiz Scores of a Specific ID
+                // Student Record Format:
+                // NAME: ::
+
+            } // end of input == 2
+            else if (input == 3) {
+
+            } // end of input == 3
+            else if (input == 4) {
+
+            } // end of input == 4
               // File classRecord = new File();
         }
     }
@@ -93,12 +104,16 @@ public class Serialization { // TODO: Formatting
 
     /**
      * <h1>Create Record</h1>
+     * <p>
      * Creates the record of a whole class of students
+     * </p>
+     * <p>
      * Needed Info: name, 4-digit ID#, 3 quiz scores
+     * </p>
      * 
-     * @param classRecord
+     * @param classRecord the file to edit/create
      * @param numStudents could be from 1 to 100
-     * @param appending   0 if overriding, 1 if appending
+     * @param append      will override file if false
      */
     private static void createRecord(File classRecord, int numStudents, boolean append) {
         Student[] students = new Student[numStudents];
@@ -177,10 +192,10 @@ class Student implements Serializable {
 
     @Override
     public String toString() {
-        String temp = String.format("NAME = %s :: ID# = %s :: ", name, getIDString());
+        String temp = String.format("NAME= %s :: ID#= %s :: ", name, getIDString());
         StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            output.append("Quiz " + (i + 1) + ": " + quizzes[i] + " :: ");
+            output.append("Quiz" + (i + 1) + "= " + quizzes[i] + " :: ");
         }
         output.append("\n");
         return output.toString();

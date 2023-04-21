@@ -63,9 +63,9 @@ public class Serialization {
                     if (console.next().charAt(0) == '0')
                         break; // goes back to the menu
                 }
-
-            }
-            // File classRecord = new File();
+                createRecord(classRecord, numStudents, append);
+            } // end of input == 1
+              // File classRecord = new File();
         }
     }
 
@@ -92,7 +92,7 @@ public class Serialization {
      * Needed Info: name, 4-digit ID#, 3 quiz scores
      * 
      * @param classRecord
-     * @param numStudents
+     * @param numStudents could be from 1 to 100
      * @param appending   0 if overwriting, 1 if appending
      */
 
@@ -119,6 +119,15 @@ class Student {
 
     public int getQuizScore(int quizNum) {
         return quizzes[quizNum];
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder(name + ": " + ID_NUMBER + "\n");
+        for (int i = 0; i < quizzes.length; i++) {
+            output.append("Quiz " + (i + 1) + ": " + quizzes[i] + "\n");
+        }
+        return output.toString();
     }
 }
 

@@ -39,20 +39,20 @@ public class Serialization {
         while (true) {
             System.out.println("MENU:");
             int input = validator(/* min: */1, /* max: */ 5);
-            System.out.println(input);
             if (input == 5)
                 break;
 
             if (input == 1) {
                 // specifies the file
-                System.out.print("Input which section that would be edited:");
+                System.out.print("Input the file name of the class record to be edited:");
                 String section = console.next();
                 StringBuilder filePath = new StringBuilder();
                 filePath.append("File_Handling/Handleables/"); // comment out later
                 filePath.append(section + ".txt");
                 classRecord = new File(filePath.toString());
+
                 // checks how many students to add
-                System.out.println("How many students records will you write?");
+                System.out.println("How many students records will you write (max 100)?");
                 int numStudents = validator(1, 100);
                 System.out.println("Will you Append or Overwrite the file? Input 0 to Overwrite, 1 to Append:");
                 int append = validator(0, 1);
@@ -62,6 +62,7 @@ public class Serialization {
                     if (console.next().charAt(0) == '0')
                         continue; // goes back to the menu
                 }
+
                 createRecord(classRecord, numStudents, append);
             } // end of input == 1
               // File classRecord = new File();
@@ -94,14 +95,24 @@ public class Serialization {
      * @param numStudents could be from 1 to 100
      * @param appending   0 if overriding, 1 if appending
      */
-
-    private static void createRecord(File classRecord, int numStudents, int appending) {
-        Student[] students = new Student[numStudents];
+    private static void createRecord(File classRecord, int numStudents, int append) {
         for (int i = 0; i < numStudents; i++) {
             Student student = new Student();
             System.out.print("Student Name: ");
             console.nextLine(); // eats up trailing new-lines
             student.name = console.nextLine();
+            System.out.println("4-digit ID#: ");
+            try {
+                student.setIDNumber(validator(0, 9999));
+            } catch (NumberNotInRangeException e) {
+                System.out.println(e); // should be unreachable, since the validator handles it already
+            }
+            System.out.println("Input the 3 Quiz Scores of Student:");
+            for (int j = 0; j < 3; j++) {
+                student.setQuizScore(j, validator(0, 100));
+            }
+            System.out.println("Is this satisfactory?");
+            System.out.println(student);
         }
     }
 
@@ -144,10 +155,10 @@ class Student {
     }
 
     public void setIDNumber(int id) throws NumberNotInRangeException {
-        if (id < 10_000 && id > 0)
+        if (id < 10_000 && id > -1)
             IDNumber = id;
         else
-            throw new NumberNotInRangeException("Must have at most 4-digits");
+            throw new NumberNotInRangeException("ERROR: ID# Must be a positive integer with at most 4 digits");
     }
 }
 

@@ -38,6 +38,11 @@ public class Serialization { // TODO: Formatting
         File classRecord = new File("");
         while (true) {
             System.out.println("MENU:");
+            System.out.println("1 - Select Class Record");
+            System.out.println("2 - Edit Quiz Score");
+            System.out.println("3 - Select Class Record");
+            System.out.println("4 - Select Class Record");
+            System.out.println("5 - Exit Program");
             int input = validator(/* min: */1, /* max: */ 5);
             if (input == 5)
                 break;
@@ -172,11 +177,12 @@ class Student implements Serializable {
 
     @Override
     public String toString() {
-        String temp = String.format("NAME = %s :: ID# = %s ::\n", name, getIDString());
+        String temp = String.format("NAME = %s :: ID# = %s :: ", name, getIDString());
         StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            output.append("Quiz " + (i + 1) + ": " + quizzes[i] + "::\n");
+            output.append("Quiz " + (i + 1) + ": " + quizzes[i] + " :: ");
         }
+        output.append("\n");
         return output.toString();
     }
 

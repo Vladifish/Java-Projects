@@ -35,7 +35,7 @@ public class Serialization {
     static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
-
+        File classRecord = new File("");
         while (true) {
             System.out.println("MENU:");
             int input = validator(/* min: */1, /* max: */ 5);
@@ -43,7 +43,6 @@ public class Serialization {
             if (input == 5)
                 break;
 
-            File classRecord = new File("");
             if (input == 1) {
                 // specifies the file
                 System.out.print("Input which section that would be edited:");
@@ -61,7 +60,7 @@ public class Serialization {
                     System.out.println(
                             "This action could delete all the information in the file? Press 0 to go back to menu");
                     if (console.next().charAt(0) == '0')
-                        break; // goes back to the menu
+                        continue; // goes back to the menu
                 }
                 createRecord(classRecord, numStudents, append);
             } // end of input == 1
@@ -93,41 +92,62 @@ public class Serialization {
      * 
      * @param classRecord
      * @param numStudents could be from 1 to 100
-     * @param appending   0 if overwriting, 1 if appending
+     * @param appending   0 if overriding, 1 if appending
      */
 
     private static void createRecord(File classRecord, int numStudents, int appending) {
-
+        Student[] students = new Student[numStudents];
+        for (int i = 0; i < numStudents; i++) {
+            Student student = new Student();
+            System.out.print("Student Name: ");
+            console.nextLine(); // eats up trailing new-lines
+            student.name = console.nextLine();
+        }
     }
 
 }
 
 class Student {
-    private String name = "Juan Dela Cruz";
-    int ID_NUMBER;
-    int[] quizzes;
+    String name = "Juan Dela Cruz";
+    private int IDNumber;
+    private double[] quizzes;
 
-    Student(String name, byte id, int quiz1, int quiz2, int quiz3) {
-        quizzes = new int[3];
+    Student() {
+        quizzes = new double[3];
+    }
+
+    Student(String name, int id, int quiz1, int quiz2, int quiz3) {
+        quizzes = new double[3];
         this.name = name;
-        ID_NUMBER = id;
+        IDNumber = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getQuizScore(int quizNum) {
+    public double getQuizScore(int quizNum) {
         return quizzes[quizNum];
+    }
+
+    public void setQuizScore(int quizNum, double score) {
+        quizzes[quizNum] = score;
     }
 
     @Override
     public String toString() {
-        StringBuilder output = new StringBuilder(name + ": " + ID_NUMBER + "\n");
+        StringBuilder output = new StringBuilder(name + ": " + getIDString() + "\n");
         for (int i = 0; i < quizzes.length; i++) {
             output.append("Quiz " + (i + 1) + ": " + quizzes[i] + "\n");
         }
         return output.toString();
+    }
+
+    public String getIDString() {
+        return String.format("%04d", IDNumber);
+    }
+
+    public void setIDNumber(int id) throws NumberNotInRangeException {
+        if (id < 10_000 && id > 0)
+            IDNumber = id;
+        else
+            throw new NumberNotInRangeException("Must have at most 4-digits");
     }
 }
 

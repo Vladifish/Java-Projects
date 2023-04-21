@@ -63,6 +63,7 @@ public class Serialization {
                     if (console.next().charAt(0) == '0')
                         break; // goes back to the menu
                 }
+
             }
             // File classRecord = new File();
         }
@@ -87,13 +88,15 @@ public class Serialization {
 
     /**
      * <h1>Create Record</h1>
-     * Creates the record of a whole class
-     * Written Info: name, 4-digit ID#, 3 quiz scores
+     * Creates the record of a whole class of students
+     * Needed Info: name, 4-digit ID#, 3 quiz scores
      * 
+     * @param classRecord
      * @param numStudents
-     * @param appending   1 for overwrite, 0 for append
+     * @param appending   0 if overwriting, 1 if appending
      */
-    private static void createRecord(int numStudents, int appending) {
+
+    private static void createRecord(File classRecord, int numStudents, int appending) {
 
     }
 

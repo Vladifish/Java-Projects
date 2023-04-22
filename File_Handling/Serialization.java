@@ -5,33 +5,6 @@ package File_Handling;
 import java.util.*;
 import java.io.*;
 
-// ➢ When 1 is chosen, ask the user to enter the number of students and allow the user to
-// enter the required data. The entered data must be saved permanently in a file(use
-// relative path). A Student class must be created with the following attributes : Name,
-// ID#(4-digit number), Quiz1, Quiz2, and Quiz3.
-
-// 
-// ➢ When 2 is chosen, ask the user for the ID# and quiz number that he/she
-// wants to edit then allow the user to edit the score. If Student ID# is not in the record, 
-// display the appropriate prompt and ask the user to enter an ID# again.
-
-// ➢ When 3 is chosen, read the Class Record file and display it on the scr
-// en in tabular form.
-// Display also the following information:
-// 
-// a. Average grade per student
-// b. Highest score per quiz
-// c. Lowest score per quiz
-// 
-// d. Average score per quiz
-
-// ➢ When 4 is chosen, ask the user for the ID# then display name, scores, and the
-// corresponding average.
-
-// ➢ When 5 is chosen, end the program.
-
-// 
-
 public class Serialization { // TODO: Text Formatting
     static Scanner console = new Scanner(System.in);
 
@@ -98,11 +71,42 @@ public class Serialization { // TODO: Text Formatting
                 displayClassRecord(classRecord, section);
             } // end of input == 3
 
-            else if (input == 4) {
+            else if (input == 4) { // Displays a specific student's record
                 if (!fileChosen) {
                     System.out.println("No File Chosen, Returning to Menu");
                     continue;
                 }
+                Student[] students = null;
+                try {
+                    FileInputStream fs = new FileInputStream(classRecord);
+                    ObjectInputStream objIn = new ObjectInputStream(fs);
+                    students = (Student[]) objIn.readObject();
+                    objIn.close();
+                } catch (IOException e) {
+                    System.out.println("Error with file, returning to menu");
+                    return;
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Input Student's ID# to view or -1 to exit:");
+                while (true) {
+                    int id = (int) validator(-1, 9999);
+                    int i;
+                    for (i = 0; i < students.length; i++) {
+                        if (id == -1) // guard-clause for this one
+                            break;
+
+                        int temp_id = Integer.parseInt(students[i].getIDString());
+                        if (temp_id == id) {
+                            System.out.println(students[i]);
+                            break;
+                        }
+                    }
+                    if (i == students.length)
+                        System.out.println("Student not found in file");
+                }
+
             } // end of input == 4
         }
     }
@@ -115,34 +119,36 @@ public class Serialization { // TODO: Text Formatting
             if (id == -1) // guard-clause
                 return;
 
-            String studID = String.format("%04d", id);
-            boolean found = false;
-            int foundIndex = 0;
             try {
                 FileInputStream fInStream = new FileInputStream(classRecord);
                 ObjectInputStream objInStream = new ObjectInputStream(fInStream);
                 Student[] editedRecord = (Student[]) objInStream.readObject();
-                for (int i = 0; i < editedRecord.length; i++) { // reads until end of line
-                    Student tempStudent = (Student) editedRecord[i];
-                    found = studID.equals(tempStudent.getIDString());
-                    if (found)
-                        foundIndex = i;
+                int i;
+                for (i = 0; i < editedRecord.length; i++) {
+                    if (id == -1) // guard-clause for this one
+                        break;
+
+                    int temp_id = Integer.parseInt(editedRecord[i].getIDString());
+                    if (temp_id == id)
+                        break;
                 }
-                if (!found)
-                    continue; // goes back to start of loop
+                if (i == editedRecord.length) {
+                    System.out.println("Student not found in file");
+                    continue; // goes back to start of edit ID loop
+                }
 
                 // Unreachable if the ID is not in the file
                 System.out.println("Input Quiz #:");
                 int quizNumber = (int) validator(1, 3);
                 System.out.println("Input New Quiz Score:");
                 double score = validator(0, 100);
-                editedRecord[foundIndex].setQuizScore(quizNumber, score);
+                editedRecord[i].setQuizScore(quizNumber, score);
 
                 fInStream.close();
                 objInStream.close();
 
-                // Updates the Record in the given file
-                ObjectOutputStream fOutStream = new ObjectOutputStream(new FileOutputStream(classRecord, false)); // appends
+                // Updates the Record in the given file, doesn't append
+                ObjectOutputStream fOutStream = new ObjectOutputStream(new FileOutputStream(classRecord, false));
                 fOutStream.writeObject(editedRecord);
                 fOutStream.close();
             } catch (FileNotFoundException e) {
@@ -203,6 +209,7 @@ public class Serialization { // TODO: Text Formatting
                 if (Integer.parseInt(students[j].getIDString()) == id) {
                     System.out.println("Duplicate ID# Found, Input Again:");
                     id = (int) validator(0, 9999);
+                    j--;
                 }
             }
             try {
@@ -248,6 +255,7 @@ public class Serialization { // TODO: Text Formatting
             FileInputStream fStream = new FileInputStream(classRecord);
             ObjectInputStream objStream = new ObjectInputStream(fStream);
             students = (Student[]) objStream.readObject();
+            objStream.close();
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: File not found, returning to menu");
             return;
@@ -289,9 +297,13 @@ public class Serialization { // TODO: Text Formatting
                     lowestQuiz[j] = s.getQuizScore(j);
             }
         }
+        for (int i = 0; i < 3; i++) {
+            averageQuiz[i] = averageQuiz[i] / students.length;
+        }
         createLine();
+
         System.out.printf("%21s %6.2f %6.2f %6.2f\n", "Average",
-                averageQuiz[0] / 3, averageQuiz[1] / 3, averageQuiz[2] / 3);
+                averageQuiz[0], averageQuiz[1], averageQuiz[2]);
         System.out.printf("%21s %6.2f %6.2f %6.2f\n", "Highest",
                 highestQuiz[0], highestQuiz[1], highestQuiz[2]);
         System.out.printf("%21s %6.2f %6.2f %6.2f\n", "Lowest",

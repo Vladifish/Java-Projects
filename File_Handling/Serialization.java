@@ -45,10 +45,13 @@ public class Serialization { // TODO: Text Formatting
             System.out.println("4 - Display Specific Student Record");
             System.out.println("5 - Exit Program");
             int input = (int) validator(/* min: */1, /* max: */ 5);
-            if (input == 5)
-                break;
 
-            if (input == 1) { //
+            if (input == 5) {
+                System.out.println("EXITING: GOOD BYE! :D");
+                break;
+            }
+
+            if (input == 1) { // Either Points or Edits a Whole File
                 // specifies the file
                 System.out.print("Input the section of the class record to be edited:");
                 String section = console.next();
@@ -75,8 +78,8 @@ public class Serialization { // TODO: Text Formatting
                 int numStudents = (int) validator(1, 100);
 
                 createRecord(classRecord, numStudents);
-
             } // end of input == 1
+
             else if (input == 2) { // Edit Quiz Scores of a Specific ID
                 if (!fileChosen) {
                     System.out.println("No File Chosen, Returning to Menu");
@@ -84,19 +87,20 @@ public class Serialization { // TODO: Text Formatting
                 }
                 editSpecificID(classRecord);
             } // end of input == 2
+
             else if (input == 3) {
                 if (!fileChosen) {
                     System.out.println("No File Chosen, Returning to Menu");
                     continue;
                 }
             } // end of input == 3
+
             else if (input == 4) {
                 if (!fileChosen) {
                     System.out.println("No File Chosen, Returning to Menu");
                     continue;
                 }
             } // end of input == 4
-              // File classRecord = new File();
         }
     }
 
@@ -251,16 +255,21 @@ class Student implements Serializable {
         quizzes[quizNum] = score;
     }
 
+    public double getAverage() {
+        average += (quizzes[0] + quizzes[1] + quizzes[2]) / 3;
+        // could be faster if it was a multiplication operation rather than division
+        return average;
+    }
+
     @Override
     public String toString() {
         String temp = String.format("NAME=%s::ID#=%s::", name, getIDString());
         StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            average += quizzes[i];
             String num_out = String.format("Quiz %d=%.2f::", (i + 1), quizzes[i]);
             output.append(num_out);
         }
-        output.append(String.format("Average=%.2f::", average / 3));
+        output.append(String.format("Average=%.2f::", getAverage()));
         return output.toString();
     }
 

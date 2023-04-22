@@ -39,7 +39,7 @@ public class Serialization { // TODO: Text Formatting
         boolean fileChosen = false;
         while (true) {
             System.out.println("MENU:");
-            System.out.println("1 - Edit/Create Class Record");
+            System.out.println("1 - Select/Create Class Record");
             System.out.println("2 - Edit Quiz Scores of a Student ID#");
             System.out.println("3 - Display Class Record");
             System.out.println("4 - Display Specific Student Record");
@@ -57,20 +57,25 @@ public class Serialization { // TODO: Text Formatting
                 filePath.append(section + ".txt");
                 classRecord = new File(filePath.toString());
 
+                // Check if Ovewriting
+                System.out.println("Will you Overwrite the file? Input 0 to go back to the menu, 1 to Overwrite:");
+                boolean overwrite = validator(0, 1) == 1;
+                fileChosen = true;
+                if (!overwrite)
+                    continue; // going back to menu
+
+                // Re-Confirm Decision
+                System.out.println(
+                        "This action could delete all the information in the file? Press any key to continue or 0 to go back to menu");
+                if (console.next().charAt(0) == '0')
+                    continue; // goes back to the menu
+
                 // checks how many students to add
                 System.out.println("How many students records will you write (max 100)?");
                 int numStudents = (int) validator(1, 100);
-                System.out.println("Will you Append or Overwrite the file? Input 0 to Overwrite, 1 to Append:");
-                boolean append = validator(0, 1) == 1;
-                if (append) { // overwriting
-                    System.out.println(
-                            "This action could delete all the information in the file? Press any key to continue or 0 to go back to menu");
-                    if (console.next().charAt(0) == '0')
-                        continue; // goes back to the menu
-                }
 
-                createRecord(classRecord, numStudents, append);
-                fileChosen = true;
+                createRecord(classRecord, numStudents);
+
             } // end of input == 1
             else if (input == 2) { // Edit Quiz Scores of a Specific ID
                 if (!fileChosen) {
@@ -129,14 +134,14 @@ public class Serialization { // TODO: Text Formatting
                 fInStream.close();
                 objInStream.close();
 
-                // Adds Updated
+                // Updates the Record in the given file
                 ObjectOutputStream fOutStream = new ObjectOutputStream(new FileOutputStream(classRecord, false)); // appends
                 fOutStream.writeObject(editedRecord);
                 fOutStream.close();
             } catch (FileNotFoundException e) {
                 System.out.println("ERROR: File not found");
             } catch (IOException e) {
-                System.out.println("An error occured with the read file");
+                System.out.println("An error occured with the read file, file might be empty");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -173,7 +178,7 @@ public class Serialization { // TODO: Text Formatting
      * @param numStudents could be from 1 to 100
      * @param append      will override file if false
      */
-    private static void createRecord(File classRecord, int numStudents, boolean append) {
+    private static void createRecord(File classRecord, int numStudents) {
         Student[] students = new Student[numStudents];
         for (int i = 0; i < numStudents; i++) {
             students[i] = new Student();
@@ -208,7 +213,7 @@ public class Serialization { // TODO: Text Formatting
 
         // I handled this outside of the other for-loop to minimize the nesting
         try {
-            FileOutputStream fOut = new FileOutputStream(classRecord, append);
+            FileOutputStream fOut = new FileOutputStream(classRecord, false);
             ObjectOutputStream objOut = new ObjectOutputStream(fOut);
             objOut.writeObject(students); // writes the entire array, so we get a more convenient read.
             objOut.close();

@@ -90,7 +90,7 @@ public class Serialization { // TODO: Text Formatting
                 editSpecificID(classRecord);
             } // end of input == 2
 
-            else if (input == 3) {
+            else if (input == 3) { // Display a tabular view of the record
                 if (!fileChosen) {
                     System.out.println("No File Chosen, Returning to Menu");
                     continue;
@@ -187,6 +187,7 @@ public class Serialization { // TODO: Text Formatting
      */
     private static void createRecord(File classRecord, int numStudents) {
         Student[] students = new Student[numStudents];
+        int counted_students = 0;
         for (int i = 0; i < numStudents; i++) {
             students[i] = new Student();
 
@@ -197,8 +198,15 @@ public class Serialization { // TODO: Text Formatting
 
             // Handling the 4 digit ID
             System.out.println("4-digit ID#: ");
+            int id = (int) validator(0, 9999);
+            for (int j = 0; j < counted_students; j++) {
+                if (Integer.parseInt(students[j].getIDString()) == id) {
+                    System.out.println("Duplicate ID# Found, Input Again:");
+                    id = (int) validator(0, 9999);
+                }
+            }
             try {
-                students[i].setIDNumber((int) validator(0, 9999));
+                students[i].setIDNumber(id);
             } catch (NumberNotInRangeException e) {
                 System.out.println(e); // should be unreachable, since the validator handles it already
             }
@@ -216,6 +224,7 @@ public class Serialization { // TODO: Text Formatting
                 i--;
                 continue;
             }
+            counted_students++; // used in the duplicate # loop
         }
 
         // I handled this outside of the other for-loop to minimize the nesting

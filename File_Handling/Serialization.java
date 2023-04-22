@@ -50,7 +50,7 @@ public class Serialization { // TODO: Text Formatting
 
             if (input == 1) { //
                 // specifies the file
-                System.out.print("Input the file name of the class record to be edited:");
+                System.out.print("Input the section of the class record to be edited:");
                 String section = console.next();
                 StringBuilder filePath = new StringBuilder();
                 filePath.append("File_Handling/Handleables/"); // comment out later
@@ -116,7 +116,7 @@ public class Serialization { // TODO: Text Formatting
                 ObjectInputStream objInStream = new ObjectInputStream(fInStream);
                 Student[] editedRecord = (Student[]) objInStream.readObject();
                 for (int i = 0; i < editedRecord.length; i++) { // reads until end of line
-                    Student tempStudent = (Student) objInStream.readObject();
+                    Student tempStudent = (Student) editedRecord[i];
                     found = studID.equals(tempStudent.getIDString());
                     if (found)
                         foundIndex = i;
@@ -252,10 +252,12 @@ class Student implements Serializable {
 
     @Override
     public String toString() {
-        String temp = String.format("NAME= %s::ID#= %s::", name, getIDString());
+        String temp = String.format("NAME=%s::ID#=%s::", name, getIDString());
         StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            output.append("Quiz" + (i + 1) + "= " + quizzes[i] + "::");
+            output.append("Quiz" + (i + 1) + "=" + quizzes[i]);
+            if (i + 1 != quizzes.length)
+                output.append("::");
         }
         output.append("\n");
         return output.toString();

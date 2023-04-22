@@ -231,6 +231,7 @@ class Student implements Serializable {
     String name = "Juan Dela Cruz";
     private int IDNumber;
     private double[] quizzes;
+    private double average = 0;
 
     Student() {
         quizzes = new double[3];
@@ -255,11 +256,11 @@ class Student implements Serializable {
         String temp = String.format("NAME=%s::ID#=%s::", name, getIDString());
         StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            output.append("Quiz" + (i + 1) + "=" + quizzes[i]);
-            if (i + 1 != quizzes.length)
-                output.append("::");
+            average += quizzes[i];
+            String num_out = String.format("Quiz %d=%.2f::", (i + 1), quizzes[i]);
+            output.append(num_out);
         }
-        output.append("\n");
+        output.append(String.format("Average=%.2f::", average / 3));
         return output.toString();
     }
 

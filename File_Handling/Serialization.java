@@ -55,7 +55,7 @@ public class Serialization { // TODO: Text Formatting
 
             if (input == 1) { // Either Points or Edits a Whole File
                 // specifies the file
-                System.out.print("Input the section of the class record to be edited:");
+                System.out.print("Input the section of the class record to be selected / edited:");
                 section = console.next();
                 StringBuilder filePath = new StringBuilder();
                 filePath.append("File_Handling/Handleables/"); // comment out later
@@ -71,7 +71,7 @@ public class Serialization { // TODO: Text Formatting
 
                 // Re-Confirm Decision
                 System.out.println(
-                        "This action could delete all the information in the file? Press any key to continue or 0 to go back to menu");
+                        "This action could delete all the information in the file? Input 0 to go back to menu or any other key to continue");
                 if (console.next().charAt(0) == '0')
                     continue; // goes back to the menu
 
@@ -250,13 +250,44 @@ public class Serialization { // TODO: Text Formatting
             return;
         }
 
+        // added values to the table
+        double[] averageQuiz = { 0, 0, 0 };
+        double[] highestQuiz = { 0, 0, 0 }; // all zeroes, you can only go up
+        double[] lowestQuiz = { 100, 100, 100 }; // all 100s, so that we can only go down
+
+        for (int i = 0; i < lowestQuiz.length; i++) {
+            lowestQuiz[i] = 100; // you can only go down from here
+        }
+
         // The Table
         createLine();
+        System.out.printf("%25s\n", section);
+        createLine();
+        System.out.printf("%-15s %-5s %6s %6s %6s %6s\n", "Name", "ID#", "Quiz1", "Quiz2", "Quiz3", "Ave");
         for (int i = 0; i < students.length; i++) {
             Student s = students[i];
-            String line = String.format("%10s #%4s %.2f %.2f %.2f\n", s.name, s.getIDString(),
+            String line = String.format("%-15s #%4s %6.2f %6.2f %6.2f %6.2f", s.name, s.getIDString(),
                     s.getQuizScore(0), s.getQuizScore(1), s.getQuizScore(2), s.getAverage());
+            System.out.println(line);
+
+            for (int j = 0; j < lowestQuiz.length; j++) {
+                averageQuiz[j] += s.getQuizScore(j);
+
+                if (highestQuiz[j] < s.getQuizScore(j))
+                    highestQuiz[j] = s.getQuizScore(j);
+
+                if (lowestQuiz[j] > s.getQuizScore(j))
+                    lowestQuiz[j] = s.getQuizScore(j);
+            }
         }
+        createLine();
+        System.out.printf("%21s %6.2f %6.2f %6.2f\n", "Average",
+                averageQuiz[0] / 3, averageQuiz[1] / 3, averageQuiz[2] / 3);
+        System.out.printf("%21s %6.2f %6.2f %6.2f\n", "Highest",
+                highestQuiz[0], highestQuiz[1], highestQuiz[2]);
+        System.out.printf("%21s %6.2f %6.2f %6.2f\n", "Lowest",
+                lowestQuiz[0], lowestQuiz[1], lowestQuiz[2]);
+        createLine();
     }
 
     // a. Average grade per student
@@ -266,7 +297,7 @@ public class Serialization { // TODO: Text Formatting
     // d. Average score per quiz
 
     private static void createLine() {
-        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------------------------");
     }
 
 }

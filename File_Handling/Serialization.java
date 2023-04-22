@@ -5,7 +5,7 @@ package File_Handling;
 import java.util.*;
 import java.io.*;
 
-public class Serialization { // TODO: Text Formatting
+public class Serialization {
     static Scanner console = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -13,12 +13,15 @@ public class Serialization { // TODO: Text Formatting
         String section = "";
         boolean fileChosen = false;
         while (true) {
+            createLine();
             System.out.println("MENU:");
+            createLine();
             System.out.println("1 - Select/Create Class Record");
             System.out.println("2 - Edit Quiz Scores of a Student ID#");
             System.out.println("3 - Display Class Record");
             System.out.println("4 - Display Specific Student Record");
             System.out.println("5 - Exit Program");
+            createLine();
             int input = (int) validator(/* min: */1, /* max: */ 5);
 
             if (input == 5) {
@@ -28,7 +31,7 @@ public class Serialization { // TODO: Text Formatting
 
             if (input == 1) { // Either Points or Edits a Whole File
                 // specifies the file
-                System.out.print("Input the section of the class record to be selected / edited:");
+                System.out.println("Input the section of the class record to be selected / edited:");
                 section = console.next();
                 StringBuilder filePath = new StringBuilder();
                 filePath.append("File_Handling/Handleables/"); // comment out later
@@ -36,7 +39,8 @@ public class Serialization { // TODO: Text Formatting
                 classRecord = new File(filePath.toString());
 
                 // Check if Ovewriting
-                System.out.println("Will you Overwrite the file? Input 0 to go back to the menu, 1 to Overwrite:");
+                System.out.println(
+                        "Will you Overwrite the file? Input 0 to select and go back to the menu, 1 to Overwrite:");
                 boolean overwrite = validator(0, 1) == 1;
                 fileChosen = true;
                 if (!overwrite)
@@ -51,6 +55,7 @@ public class Serialization { // TODO: Text Formatting
                 // checks how many students to add
                 System.out.println("How many students records will you write (max 100)?");
                 int numStudents = (int) validator(1, 100);
+                createLine();
 
                 createRecord(classRecord, numStudents);
             } // end of input == 1
@@ -88,9 +93,8 @@ public class Serialization { // TODO: Text Formatting
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-
-                System.out.println("Input Student's ID# to view or -1 to exit:");
                 while (true) {
+                    System.out.println("Input Student's ID# to view or -1 to exit:");
                     int id = (int) validator(-1, 9999);
                     int i;
                     for (i = 0; i < students.length; i++) {
@@ -105,6 +109,9 @@ public class Serialization { // TODO: Text Formatting
                     }
                     if (i == students.length)
                         System.out.println("Student not found in file");
+                    if (id == -1)
+                        break;
+                    createLine();
                 }
 
             } // end of input == 4
@@ -143,6 +150,7 @@ public class Serialization { // TODO: Text Formatting
                 System.out.println("Input New Quiz Score:");
                 double score = validator(0, 100);
                 editedRecord[i].setQuizScore(quizNumber, score);
+                createLine();
 
                 fInStream.close();
                 objInStream.close();
@@ -223,10 +231,11 @@ public class Serialization { // TODO: Text Formatting
             for (int j = 0; j < 3; j++) {
                 students[i].setQuizScore(j, validator(0, 100));
             }
-
+            createLine();
             // Check if the inputted information is correct
             System.out.println("Is this satisfactory? Input any key to continue or input 0 to redo operation");
             System.out.println(students[i]);
+            createLine();
             if (console.next().charAt(0) == '0') {
                 i--;
                 continue;
@@ -354,13 +363,13 @@ class Student implements Serializable {
 
     @Override
     public String toString() {
-        String temp = String.format("NAME=%s::ID#=%s::", name, getIDString());
+        String temp = String.format("NAME=%s::ID#=%s\n", name, getIDString());
         StringBuilder output = new StringBuilder(temp);
         for (int i = 0; i < quizzes.length; i++) {
-            String num_out = String.format("Quiz %d=%.2f::", (i + 1), quizzes[i]);
+            String num_out = String.format("Quiz %d=%.2f\n", (i + 1), quizzes[i]);
             output.append(num_out);
         }
-        output.append(String.format("Average=%.2f::", getAverage()));
+        output.append(String.format("Average=%.2f", getAverage()));
         return output.toString();
     }
 

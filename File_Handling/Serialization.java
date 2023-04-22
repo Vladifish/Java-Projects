@@ -1,4 +1,5 @@
 // Vladimir Gray P. Velazco 1CSC
+// Beware this code might be overengineered
 package File_Handling;
 
 import java.util.*;
@@ -36,6 +37,7 @@ public class Serialization { // TODO: Text Formatting
 
     public static void main(String[] args) {
         File classRecord = new File("");
+        String section = "";
         boolean fileChosen = false;
         while (true) {
             System.out.println("MENU:");
@@ -54,7 +56,7 @@ public class Serialization { // TODO: Text Formatting
             if (input == 1) { // Either Points or Edits a Whole File
                 // specifies the file
                 System.out.print("Input the section of the class record to be edited:");
-                String section = console.next();
+                section = console.next();
                 StringBuilder filePath = new StringBuilder();
                 filePath.append("File_Handling/Handleables/"); // comment out later
                 filePath.append(section + ".txt");
@@ -93,6 +95,7 @@ public class Serialization { // TODO: Text Formatting
                     System.out.println("No File Chosen, Returning to Menu");
                     continue;
                 }
+                displayClassRecord(classRecord, section);
             } // end of input == 3
 
             else if (input == 4) {
@@ -226,7 +229,44 @@ public class Serialization { // TODO: Text Formatting
         } catch (IOException e) {
             System.out.println("Error with handled file");
         }
+    }
 
+    private static void displayClassRecord(File classRecord, String section) {
+        Student[] students = null; // the record of each student
+
+        // gets the student array from the file
+        try {
+            FileInputStream fStream = new FileInputStream(classRecord);
+            ObjectInputStream objStream = new ObjectInputStream(fStream);
+            students = (Student[]) objStream.readObject();
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR: File not found, returning to menu");
+            return;
+        } catch (IOException e) {
+            System.out.println("An error occured with the read file, file might be empty. Returning to menu");
+            return;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // The Table
+        createLine();
+        for (int i = 0; i < students.length; i++) {
+            Student s = students[i];
+            String line = String.format("%10s #%4s %.2f %.2f %.2f\n", s.name, s.getIDString(),
+                    s.getQuizScore(0), s.getQuizScore(1), s.getQuizScore(2), s.getAverage());
+        }
+    }
+
+    // a. Average grade per student
+    // b. Highest score per quiz
+    // c. Lowest score per quiz
+    //
+    // d. Average score per quiz
+
+    private static void createLine() {
+        System.out.println("-------------------------------------");
     }
 
 }
@@ -256,9 +296,8 @@ class Student implements Serializable {
     }
 
     public double getAverage() {
-        average += (quizzes[0] + quizzes[1] + quizzes[2]) / 3;
         // could be faster if it was a multiplication operation rather than division
-        return average;
+        return (quizzes[0] + quizzes[1] + quizzes[2]) / 3;
     }
 
     @Override

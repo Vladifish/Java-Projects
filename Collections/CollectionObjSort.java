@@ -23,6 +23,21 @@ class Person {
         return getName() + " " + getAge();
     }
 
+    final public static Comparator<Person> AGE_COMPARATOR = new Comparator<>() {
+        @Override
+        public int compare(Person p1, Person p2) {
+            Integer a1 = p1.getAge();
+            return a1.compareTo(p2.getAge());
+        }
+    };
+
+    final public static Comparator<Person> NAME_COMPARATOR = new Comparator<>() {
+        @Override
+        public int compare(Person p1, Person p2) {
+            return p1.getName().compareTo(p2.getName()); // String is already a wrapper class
+        }
+    };
+
 }
 
 public class CollectionObjSort {
@@ -90,10 +105,24 @@ public class CollectionObjSort {
                         System.out.println("The person is not in the list");
                     break;
                 case 6:
-                    List<Person> sorted = sortByAge(list);
-                    Iterator<Person> iter = sorted.iterator();
-                    while (iter.hasNext()) {
-                        Person curr = iter.next();
+                    if (list.size() == 0) // you cannot sort empty lists
+                        continue;
+                    List<Person> sortedAge = list;
+                    Collections.sort(list, Person.AGE_COMPARATOR);
+                    Iterator<Person> iterAge = sortedAge.iterator();
+                    while (iterAge.hasNext()) {
+                        Person curr = iterAge.next();
+                        System.out.printf("Age: %d, %s\n", curr.getAge(), curr.getName());
+                    }
+                    break;
+                case 7:
+                    if (list.size() == 0) // you cannot sort empty lists
+                        continue;
+                    List<Person> sortedName = list;
+                    Collections.sort(list, Person.NAME_COMPARATOR);
+                    Iterator<Person> iterName = sortedName.iterator();
+                    while (iterName.hasNext()) {
+                        Person curr = iterName.next();
                         System.out.printf("Age: %d, %s\n", curr.getAge(), curr.getName());
                     }
                     break;
@@ -110,27 +139,12 @@ public class CollectionObjSort {
      * https://www.java67.com/2014/11/java-8-comparator-example-using-lambda-
      * expression.html
      */
-    public static List<Person> sortByAge(List<Person> persons) {
+    public static List<Person> sort(List<Person> persons, Comparator<Person> comparator) {
         if (persons.size() == 0) // Avoids Any Index Errors
             return null;
         List<Person> sorted = persons;
-        final Comparator<Person> AGE_COMPARATOR = new Comparator<>() {
-            @Override
-            public int compare(Person p1, Person p2) {
-                Integer a1 = p1.getAge();
-                return a1.compareTo(p2.getAge());
-            }
-        };
-        Collections.sort(sorted, AGE_COMPARATOR);
+        Collections.sort(sorted, comparator);
         return sorted;
     }
 
-    public static List<Person> sortByName(List<Person> persons) {
-        if (persons.size() == 0) // Avoids Any Index Errors
-            return null;
-
-        List<Person> sorted = new ArrayList<>(persons.size());
-
-        return sorted;
-    }
 }

@@ -1,4 +1,13 @@
+// Vladimir Gray P. Velazco 1-CSC
 package Collections;
+
+/*
+ * Lambda Expressions :D
+ * Reference Code: Java 67,
+ * https://www.java67.com/2014/11/java-8-comparator-example-using-lambda-
+ * expression.html
+ * But I edited out the method signatures, since they're redundant with SAM interfaces
+ */
 
 import java.util.*;
 
@@ -23,21 +32,6 @@ class Person {
         return getName() + " " + getAge();
     }
 
-    final public static Comparator<Person> AGE_COMPARATOR = new Comparator<>() {
-        @Override
-        public int compare(Person p1, Person p2) {
-            Integer a1 = p1.getAge();
-            return a1.compareTo(p2.getAge());
-        }
-    };
-
-    final public static Comparator<Person> NAME_COMPARATOR = new Comparator<>() {
-        @Override
-        public int compare(Person p1, Person p2) {
-            return p1.getName().compareTo(p2.getName()); // String is already a wrapper class
-        }
-    };
-
 }
 
 public class CollectionObjSort {
@@ -47,6 +41,17 @@ public class CollectionObjSort {
         int age;
         Person person;
         Scanner in = new Scanner(System.in);
+
+        // Lambda Expressions
+        final Comparator<Person> AGE_COMPARATOR = (Person p1, Person p2) -> {
+            Integer a1 = p1.getAge();
+            return a1.compareTo(p2.getAge());
+        };
+
+        final Comparator<Person> NAME_COMPARATOR = (Person p1, Person p2) -> {
+            return p1.getName().compareTo(p2.getName()); // String is already a wrapper class
+        };
+
         System.out.println("\nMenu\n1.Add a Person\n2.Remove a Person\n3.Display Records"
                 + "\n4.Delete Records\n5.Search a Person\n6.Sort by Age\n7.Sort by Name\n8.End");
         int ans = 1;
@@ -107,8 +112,9 @@ public class CollectionObjSort {
                 case 6:
                     if (list.size() == 0) // you cannot sort empty lists
                         continue;
+
                     List<Person> sortedAge = list;
-                    Collections.sort(list, Person.AGE_COMPARATOR);
+                    Collections.sort(list, AGE_COMPARATOR);
                     Iterator<Person> iterAge = sortedAge.iterator();
                     while (iterAge.hasNext()) {
                         Person curr = iterAge.next();
@@ -118,33 +124,18 @@ public class CollectionObjSort {
                 case 7:
                     if (list.size() == 0) // you cannot sort empty lists
                         continue;
+
                     List<Person> sortedName = list;
-                    Collections.sort(list, Person.NAME_COMPARATOR);
+                    Collections.sort(list, NAME_COMPARATOR);
                     Iterator<Person> iterName = sortedName.iterator();
-                    while (iterName.hasNext()) {
-                        Person curr = iterName.next();
-                        System.out.printf("Age: %d, %s\n", curr.getAge(), curr.getName());
-                    }
+                    while (iterName.hasNext())
+                        System.out.println(iterName.next());
                     break;
                 case 8:
                     ans = 0;
             }
         } while (ans != 0);
         System.out.println();
-    }
-
-    /*
-     * Lambda Expressions :D
-     * Reference Code: Java 67,
-     * https://www.java67.com/2014/11/java-8-comparator-example-using-lambda-
-     * expression.html
-     */
-    public static List<Person> sort(List<Person> persons, Comparator<Person> comparator) {
-        if (persons.size() == 0) // Avoids Any Index Errors
-            return null;
-        List<Person> sorted = persons;
-        Collections.sort(sorted, comparator);
-        return sorted;
     }
 
 }

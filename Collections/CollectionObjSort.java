@@ -33,7 +33,7 @@ public class CollectionObjSort {
         Person person;
         Scanner in = new Scanner(System.in);
         System.out.println("\nMenu\n1.Add a Person\n2.Remove a Person\n3.Display Records"
-                + "\n4.Delete Records\n5.Search a Person\n6.End");
+                + "\n4.Delete Records\n5.Search a Person\n6.Sort by Age\n7.Sort by Name\n8.End");
         int ans = 1;
         do {
             System.out.print("\nEnter your choice: ");
@@ -90,6 +90,14 @@ public class CollectionObjSort {
                         System.out.println("The person is not in the list");
                     break;
                 case 6:
+                    List<Person> sorted = sortByAge(list);
+                    Iterator<Person> iter = sorted.iterator();
+                    while (iter.hasNext()) {
+                        Person curr = iter.next();
+                        System.out.printf("Age: %d, %s\n", curr.getAge(), curr.getName());
+                    }
+                    break;
+                case 8:
                     ans = 0;
             }
         } while (ans != 0);

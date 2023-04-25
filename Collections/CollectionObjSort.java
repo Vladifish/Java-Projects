@@ -48,10 +48,6 @@ public class CollectionObjSort {
             return a1.compareTo(p2.getAge());
         };
 
-        final Comparator<Person> NAME_COMPARATOR = (Person p1, Person p2) -> {
-            return p1.getName().compareTo(p2.getName()); // String is already a wrapper class
-        };
-
         System.out.println("\nMenu\n1.Add a Person\n2.Remove a Person\n3.Display Records"
                 + "\n4.Delete Records\n5.Search a Person\n6.Sort by Age\n7.Sort by Name\n8.End");
         int ans = 1;
@@ -126,7 +122,7 @@ public class CollectionObjSort {
                         continue;
 
                     List<Person> sortedName = list;
-                    Collections.sort(list, NAME_COMPARATOR);
+                    Collections.sort(list, (Person p1, Person p2) -> p1.getName().compareTo(p2.getName()));
                     Iterator<Person> iterName = sortedName.iterator();
                     while (iterName.hasNext())
                         System.out.println(iterName.next());

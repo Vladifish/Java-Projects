@@ -96,7 +96,33 @@ public class CollectionObjSort {
         System.out.println();
     }
 
-    public static void sortByAge(Person[] persons) {
+    /*
+     * Lambda Expressions :D
+     * Reference Code: Java 67,
+     * https://www.java67.com/2014/11/java-8-comparator-example-using-lambda-
+     * expression.html
+     */
+    public static List<Person> sortByAge(List<Person> persons) {
+        if (persons.size() == 0) // Avoids Any Index Errors
+            return null;
+        List<Person> sorted = persons;
+        final Comparator<Person> AGE_COMPARATOR = new Comparator<>() {
+            @Override
+            public int compare(Person p1, Person p2) {
+                Integer a1 = p1.getAge();
+                return a1.compareTo(p2.getAge());
+            }
+        };
+        Collections.sort(sorted, AGE_COMPARATOR);
+        return sorted;
+    }
 
+    public static List<Person> sortByName(List<Person> persons) {
+        if (persons.size() == 0) // Avoids Any Index Errors
+            return null;
+
+        List<Person> sorted = new ArrayList<>(persons.size());
+
+        return sorted;
     }
 }

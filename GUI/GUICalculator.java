@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.*;
+
 import javax.swing.JFrame;
 // import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -19,18 +20,18 @@ class OutputFrame extends JFrame {
     OutputFrame() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("GUI Calculator");
-        setLayout(new GridLayout(4, 1, 10, 0));
+        setLayout(new GridLayout(4, 1, 15, 0));
 
         p1 = new Panel(new FlowLayout());
         p2 = new Panel(new FlowLayout());
         p3 = new Panel(new FlowLayout());
         p4 = new Panel(new FlowLayout());
 
-        l1 = new Label("First Number");
+        l1 = new Label("First Number:");
         tf1 = new TextField("0.0");
-        l2 = new Label("Second Number");
+        l2 = new Label("Second Number:");
         tf2 = new TextField("0.0");
-        l3 = new Label("Answer");
+        l3 = new Label("Answer:");
         tf3 = new TextField("0.0");
 
         p1.add(l1);
@@ -56,10 +57,9 @@ class OutputFrame extends JFrame {
         add(p2);
         add(p3);
         add(p4);
-        pack();
 
+        setSize(400, 200);
         setLocationRelativeTo(null);
-        setSize(400, 600);
         setVisible(true);
     }
 }

@@ -3,7 +3,6 @@ package GUI;
 import java.awt.*;
 
 import javax.swing.JFrame;
-// import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class GUICalculator {
     public static void main(String[] args) {

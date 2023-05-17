@@ -14,7 +14,7 @@ class OutputFrame extends JFrame {
     private Label l1, l2, l3;
     private TextField tf1, tf2, tf3;
     private Panel p1, p2, p3, p4;
-    private Button add, subt, mult, divide, canc;
+    private Button add, subt, mult, divide, cancel;
 
     OutputFrame() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,6 +32,7 @@ class OutputFrame extends JFrame {
         tf2 = new TextField("0.0");
         l3 = new Label("Answer:");
         tf3 = new TextField("0.0");
+        tf3.setEditable(false);
 
         p1.add(l1);
         p1.add(tf1);
@@ -44,13 +45,15 @@ class OutputFrame extends JFrame {
         subt = new Button("-");
         mult = new Button("*");
         divide = new Button("/");
-        canc = new Button("C");
+        cancel = new Button("C");
+
+        setButtons();
 
         p4.add(add);
         p4.add(subt);
         p4.add(mult);
         p4.add(divide);
-        p4.add(canc);
+        p4.add(cancel);
 
         add(p1);
         add(p2);
@@ -60,5 +63,37 @@ class OutputFrame extends JFrame {
         setSize(400, 200);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void setButtons() {
+        add.addActionListener(e -> {
+            tf3.setText("" +
+                    (Double.parseDouble(tf1.getText()) +
+                            Double.parseDouble(tf2.getText())));
+        });
+
+        subt.addActionListener(e -> {
+            tf3.setText("" +
+                    (Double.parseDouble(tf1.getText()) -
+                            Double.parseDouble(tf2.getText())));
+        });
+
+        mult.addActionListener(e -> {
+            tf3.setText("" +
+                    (Double.parseDouble(tf1.getText()) *
+                            Double.parseDouble(tf2.getText())));
+        });
+
+        divide.addActionListener(e -> {
+            tf3.setText("" +
+                    (Double.parseDouble(tf1.getText()) /
+                            Double.parseDouble(tf2.getText())));
+        });
+
+        cancel.addActionListener(e -> {
+            tf3.setText("0.00");
+            tf1.setText("0.00");
+            tf2.setText("0.00");
+        });
     }
 }

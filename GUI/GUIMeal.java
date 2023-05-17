@@ -23,6 +23,8 @@ class MenuFrame extends JFrame {
 
         createHeader();
         add(header);
+        createBody();
+        add(body);
     }
 
     void createHeader() {
@@ -53,5 +55,23 @@ class MenuFrame extends JFrame {
     void addComponentsToPanel(Panel panel, Component[] components) {
         for (Component c : components)
             panel.add(c);
+    }
+
+    void createBody() {
+        body = new Panel(new GridLayout(3, 1));
+        Panel[] rows = new Panel[3];
+        rows[0] = createRow("A", "78.75", "102.50");
+        rows[1] = createRow("B", "68.75", "85.70");
+        rows[2] = createRow("C", "70.25", "95.60");
+
+        addComponentsToPanel(body, rows);
+    }
+
+    private Panel createRow(String c1, String c2, String c3) {
+        Panel row = new Panel(new GridLayout(1, 3));
+        row.add(new Label(c1, Label.CENTER));
+        row.add(new Label(c2, Label.CENTER));
+        row.add(new Label(c3, Label.CENTER));
+        return row;
     }
 }

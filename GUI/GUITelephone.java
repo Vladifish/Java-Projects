@@ -16,6 +16,7 @@ public class GUITelephone {
     public static void main(String[] args) {
         TelephoneUI mainProgram = new TelephoneUI();
         mainProgram.setVisible(true);
+
     }
 
 }
@@ -26,6 +27,7 @@ class TelephoneUI extends JFrame {
     private JRadioButton dayButton, nightButton;
     private JPanel CostOutputPanel, InputPanel;
     private JTextField callHoursInput;
+    private JLabel grossCostLabel, netCostLabel;
 
     TelephoneUI() {
         setSize(300, 200);
@@ -33,7 +35,7 @@ class TelephoneUI extends JFrame {
         setLayout(new GridLayout(1, 1));
 
         JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new GridLayout(2, 1, 15, 0));
+        contentPanel.setLayout(new GridLayout(3, 1, 15, 0));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         setContentPane(contentPanel);
@@ -41,14 +43,23 @@ class TelephoneUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("GUI Calculator");
 
-        // setupOutputPanel();
-        // add(CostOutputPanel);
+        setupOutputPanel();
+        contentPanel.add(CostOutputPanel);
         setupInputPanel();
-        add(InputPanel);
+        contentPanel.add(InputPanel);
     }
 
     private void setupOutputPanel() {
+        CostOutputPanel = new JPanel();
+        CostOutputPanel.setLayout(new GridLayout(2, 2));
 
+        CostOutputPanel.add(new JLabel("Gross Cost:"));
+        grossCostLabel = new JLabel("0");
+        CostOutputPanel.add(grossCostLabel);
+
+        CostOutputPanel.add(new JLabel("Net Cost"));
+        netCostLabel = new JLabel("0");
+        CostOutputPanel.add(netCostLabel);
     }
 
     private void setupButtons() {
@@ -72,7 +83,6 @@ class TelephoneUI extends JFrame {
         JPanel textInput = new JPanel(new FlowLayout(FlowLayout.CENTER));
         textInput.add(new JLabel("Call Length (minutes): "));
         callHoursInput = new JTextField("0", 3);
-        // callHoursInput.setSize(50, 20);
         textInput.add(callHoursInput);
 
         InputPanel.add(buttons);
@@ -89,5 +99,13 @@ class TelephoneUI extends JFrame {
 
     public int getHours() {
         return Integer.parseInt(callHoursInput.getText());
+    }
+
+    public void setGrossCost(double num) {
+        grossCostLabel.setText(num + "");
+    }
+
+    public void setNetCost(double num) {
+        netCostLabel.setText(num + "");
     }
 }

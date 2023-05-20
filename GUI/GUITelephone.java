@@ -18,6 +18,21 @@ public class GUITelephone {
         TelephoneUI mainProgram = new TelephoneUI();
         mainProgram.setVisible(true);
 
+        mainProgram.submitButton.addActionListener(e -> {
+            char timeOfDay = mainProgram.getTime();
+            int totalHours = mainProgram.getHours();
+            double cost = totalHours * CALL_RATE;
+            mainProgram.setGrossCost(cost);
+            if (timeOfDay == 'N')
+                cost *= NIGHT_DISCOUNT;
+            if (totalHours > 60)
+                cost *= 1 - EXTEND_DISCOUNT;
+            cost *= 1 + EVAT;
+            mainProgram.setNetCost(cost);
+        });
+        mainProgram.cancelButton.addActionListener(e -> {
+            mainProgram.revertHours();
+        });
     }
 
 }
@@ -71,11 +86,11 @@ class TelephoneUI extends JFrame {
         CostOutputPanel.setLayout(new GridLayout(2, 2));
 
         CostOutputPanel.add(new JLabel("Gross Cost:"));
-        grossCostLabel = new JLabel("0");
+        grossCostLabel = new JLabel("P0.00");
         CostOutputPanel.add(grossCostLabel);
 
         CostOutputPanel.add(new JLabel("Net Cost"));
-        netCostLabel = new JLabel("0");
+        netCostLabel = new JLabel("P0.00");
         CostOutputPanel.add(netCostLabel);
     }
 
@@ -118,11 +133,15 @@ class TelephoneUI extends JFrame {
         return Integer.parseInt(callHoursInput.getText());
     }
 
+    public void revertHours() {
+        callHoursInput.setText("0");
+    }
+
     public void setGrossCost(double num) {
-        grossCostLabel.setText(num + "");
+        grossCostLabel.setText(String.format("P%.2f", num));
     }
 
     public void setNetCost(double num) {
-        netCostLabel.setText(num + "");
+        netCostLabel.setText(String.format("P%.2f", num));
     }
 }

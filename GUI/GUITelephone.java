@@ -6,6 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+// TODO: Functionality and Submit Button
 public class GUITelephone {
 
     final static int CALL_RATE = 4;
@@ -25,18 +26,20 @@ class TelephoneUI extends JFrame {
 
     private ButtonGroup dayOrNight;
     private JRadioButton dayButton, nightButton;
-    private JPanel CostOutputPanel, InputPanel;
+    private JPanel CostOutputPanel, InputPanel, actionPanel;
     private JTextField callHoursInput;
     private JLabel grossCostLabel, netCostLabel;
 
+    protected JButton submitButton, cancelButton;
+
     TelephoneUI() {
-        setSize(300, 200);
+        setSize(400, 300);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(1, 1));
 
         JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new GridLayout(3, 1, 15, 0));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        contentPanel.setLayout(new GridLayout(4, 1, 15, 0));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 
         setContentPane(contentPanel);
 
@@ -47,6 +50,20 @@ class TelephoneUI extends JFrame {
         contentPanel.add(CostOutputPanel);
         setupInputPanel();
         contentPanel.add(InputPanel);
+        setupActionPanel();
+        contentPanel.add(actionPanel);
+    }
+
+    private void setupActionPanel() {
+
+        actionPanel = new JPanel(new GridLayout(2, 1));
+        actionPanel.add(new Panel()); // Filler for the left
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        submitButton = new JButton("Submit");
+        cancelButton = new JButton("Cancel");
+        rightPanel.add(submitButton);
+        rightPanel.add(cancelButton);
+        actionPanel.add(rightPanel);
     }
 
     private void setupOutputPanel() {

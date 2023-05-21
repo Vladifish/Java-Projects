@@ -5,8 +5,11 @@ package GUI;
 import java.awt.*;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
 
 public class GUIMeal {
     public static void main(String[] args) {
@@ -17,7 +20,17 @@ public class GUIMeal {
 
 class MenuFrame extends JFrame {
     Panel header, body, orders;
-    TextField tf_setA, tf_setB, tf_setC;
+    TextField amountField;
+    JComboBox<String> mealOptions;
+
+    final static String[] MEAL_OPTIONS = {
+            "Meal A", "Meal B", "MEAL C",
+            "Extra Rice", "Salad", "Soup", "Dessert"
+    };
+
+    final static String[] MENU = {
+            "A", "78.75", "102.50"
+    };
 
     MenuFrame() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,8 +48,18 @@ class MenuFrame extends JFrame {
     }
 
     private void createOrderFields() {
-        orders = new Panel(new GridLayout(2, 1));
+        orders = new Panel(new FlowLayout(FlowLayout.RIGHT, 0, 2));
 
+        // Dropdown List for Meal Type
+        orders.add(new Label("Meal Type:"));
+        mealOptions = new JComboBox<>(MEAL_OPTIONS);
+        mealOptions.setBorder(new EmptyBorder(0, 0, 0, /* right: */10));
+        orders.add(mealOptions);
+
+        // Field for Number of Meals
+        orders.add(new Label("Amount:"));
+        amountField = new TextField(2);
+        orders.add(amountField);
     }
 
     private void createBody() {
@@ -86,24 +109,4 @@ class MenuFrame extends JFrame {
         row.add(new Label(c3, Label.CENTER));
         return row;
     }
-}
-
-class OrderPanel extends Panel {
-    Label mealCodeLabel;
-    ButtonGroup size_group;
-    JRadioButton regButton, upsButton;
-    TextField orderCountField;
-
-    OrderPanel(String mealCode) {
-        mealCodeLabel.setText(mealCode);
-        size_group = new ButtonGroup();
-
-        regButton = new JRadioButton("R");
-        upsButton = new JRadioButton("U");
-        size_group.add(regButton);
-        size_group.add(upsButton);
-
-        add(mealCodeLabel);
-    }
-
 }

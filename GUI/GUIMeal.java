@@ -3,12 +3,10 @@
 package GUI;
 
 import java.awt.*;
+import java.util.Stack;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
 public class GUIMeal {
@@ -19,9 +17,10 @@ public class GUIMeal {
 }
 
 class MenuFrame extends JFrame {
-    Panel header, body, orders;
+    private Panel header, body, orders, payment;
     TextField amountField;
     JComboBox<String> mealOptions;
+    Stack<String[]> order_stack = new Stack<>();
 
     final static String[] MEAL_OPTIONS = {
             "Meal A", "Meal B", "MEAL C",
@@ -29,13 +28,20 @@ class MenuFrame extends JFrame {
     };
 
     final static String[] MENU = {
-            "A", "78.75", "102.50"
+            "A", "78.75", "102.50",
+            "B", "68.75", "85.70",
+            "C", "70.25", "95.60",
+            "Sides", "", "",
+            "Extra Rice", "20.00", "",
+            "Salad", "60.00", "",
+            "Soup", "55.00", "",
+            "Dessert", "85.00", ""
     };
 
     MenuFrame() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Ordertaker");
-        setLayout(new GridLayout(3, 1));
+        setLayout(new GridLayout(4, 1));
         setSize(600, 600);
         setLocationRelativeTo(null);
 
@@ -45,6 +51,11 @@ class MenuFrame extends JFrame {
         add(body);
         createOrderFields();
         add(orders);
+        createPaymentPanel();
+        add(payment);
+    }
+
+    private void createPaymentPanel() {
     }
 
     private void createOrderFields() {
@@ -63,11 +74,15 @@ class MenuFrame extends JFrame {
     }
 
     private void createBody() {
-        body = new Panel(new GridLayout(3, 1));
-        Panel[] rows = new Panel[3];
-        rows[0] = createRow("A", "78.75", "102.50");
-        rows[1] = createRow("B", "68.75", "85.70");
-        rows[2] = createRow("C", "70.25", "95.60");
+        body = new Panel(new GridLayout(8, 1));
+        Panel[] rows = new Panel[8];
+
+        for (int i = 0; i < rows.length; i++) {
+            rows[i] = createRow(MENU[i * 3], MENU[i * 3 + 1], MENU[i * 3 + 2]);
+        }
+        // rows[0] = createRow("A", "78.75", "102.50");
+        // rows[1] = createRow("B", "68.75", "85.70");
+        // rows[2] = createRow("C", "70.25", "95.60");
 
         addComponentsToPanel(body, rows);
     }

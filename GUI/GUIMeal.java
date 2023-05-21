@@ -17,7 +17,11 @@ public class GUIMeal {
 }
 
 class MenuFrame extends JFrame {
-    private Panel header, body, orders, payment;
+    private Panel header, body, orders, payment; // Main Panels
+    private Panel lastItemAdded; // Utility Panels
+    private Button submitButton, undoButton;
+    private Label netCost, grossCost;
+
     TextField amountField;
     JComboBox<String> mealOptions;
     Stack<String[]> order_stack = new Stack<>();
@@ -56,6 +60,33 @@ class MenuFrame extends JFrame {
     }
 
     private void createPaymentPanel() {
+        payment = new Panel(new GridLayout(2, 2));
+        lastItemAdded = new Panel(new GridLayout(2, 1));
+        displayLastAdded(); // the last item added, will be completely empty at first run
+        payment.add(lastItemAdded);
+        payment.add(new Panel()); // Filler
+
+        // Lower Half of Payment Panel
+
+        // The display for the net and gross cost
+        Panel costs = new Panel(new GridLayout(2, 2));
+        costs.add(new Label("Gross Cost:"));
+        grossCost = new Label("0.00");
+        costs.add(grossCost);
+        costs.add(new Label("Net Cost:"));
+        netCost = new Label("0.00");
+
+        costs.add(netCost);
+        payment.add(costs);
+
+        // Confirms orders
+        Panel finalChanges = new Panel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        submitButton = new Button("SUBMIT");
+        undoButton = new Button("UNDO");
+
+        finalChanges.add(submitButton);
+        finalChanges.add(undoButton);
+        payment.add(finalChanges);
     }
 
     private void createOrderFields() {
@@ -80,9 +111,6 @@ class MenuFrame extends JFrame {
         for (int i = 0; i < rows.length; i++) {
             rows[i] = createRow(MENU[i * 3], MENU[i * 3 + 1], MENU[i * 3 + 2]);
         }
-        // rows[0] = createRow("A", "78.75", "102.50");
-        // rows[1] = createRow("B", "68.75", "85.70");
-        // rows[2] = createRow("C", "70.25", "95.60");
 
         addComponentsToPanel(body, rows);
     }
@@ -123,5 +151,22 @@ class MenuFrame extends JFrame {
         row.add(new Label(c2, Label.CENTER));
         row.add(new Label(c3, Label.CENTER));
         return row;
+    }
+
+    /**
+     * Reads the order stack and adds it to the display
+     * If the stack is empty, then the output should also be empty
+     */
+    private void displayLastAdded() {
+        Panel orderHeader = createRow("Meal", "Size", "Amount");
+        Panel lastAddedOrder;
+        if (!order_stack.isEmpty()) {
+            String[] lastOrder = order_stack.peek();
+            lastAddedOrder = createRow(lastOrder[0], lastOrder[1], lastOrder[2]);
+        } else {
+            lastAddedOrder = createRow("-", "-", "-"); // Completely Empty
+        }
+        lastItemAdded.add(orderHeader);
+        lastItemAdded.add(lastAddedOrder);
     }
 }

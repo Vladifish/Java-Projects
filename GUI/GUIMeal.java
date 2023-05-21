@@ -35,6 +35,7 @@ class MenuFrame extends JFrame {
             "A", "78.75", "102.50",
             "B", "68.75", "85.70",
             "C", "70.25", "95.60",
+            "-----", "-----", "-----",
             "Sides", "", "",
             "Extra Rice", "20.00", "",
             "Salad", "60.00", "",
@@ -70,10 +71,10 @@ class MenuFrame extends JFrame {
 
         // The display for the net and gross cost
         Panel costs = new Panel(new GridLayout(2, 2));
-        costs.add(new Label("Gross Cost:"));
+        costs.add(new Label("Gross Cost:", Label.CENTER));
         grossCost = new Label("0.00");
         costs.add(grossCost);
-        costs.add(new Label("Net Cost:"));
+        costs.add(new Label("Net Cost:", Label.CENTER));
         netCost = new Label("0.00");
 
         costs.add(netCost);
@@ -90,7 +91,7 @@ class MenuFrame extends JFrame {
     }
 
     private void createOrderFields() {
-        orders = new Panel(new FlowLayout(FlowLayout.RIGHT, 0, 2));
+        orders = new Panel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 
         // Dropdown List for Meal Type
         orders.add(new Label("Meal Type:"));
@@ -105,8 +106,8 @@ class MenuFrame extends JFrame {
     }
 
     private void createBody() {
-        body = new Panel(new GridLayout(8, 1));
-        Panel[] rows = new Panel[8];
+        body = new Panel(new GridLayout((int) (MENU.length / 3), 1));
+        Panel[] rows = new Panel[(int) (MENU.length / 3)];
 
         for (int i = 0; i < rows.length; i++) {
             rows[i] = createRow(MENU[i * 3], MENU[i * 3 + 1], MENU[i * 3 + 2]);

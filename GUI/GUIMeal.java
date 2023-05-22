@@ -24,13 +24,16 @@ class MenuFrame extends JFrame {
     private Panel header, body, orders, payment; // Main Panels
     private Panel lastItemAdded, orderHeader, lastAddedOrder; // Utility Panels
     private Button addButton, undoButton;
-    private Label netCost, grossCost,
+    private Label netCostLabel, grossCostLabel,
             orderType, orderSize, orderAmount, orderCost;
 
     TextField amountField;
     JComboBox<String> mealOptions, sizeOptions;
     Stack<String[]> order_stack = new Stack<>();
     HashMap<String, String[]> MENU_MAP = new HashMap<>();
+
+    private double grossCost = 0, netCost = 0;
+    private final double VAT = 0.08, DISCOUNT = 0.12;
 
     final static String[] MEAL_OPTIONS = {
             "Meal A", "Meal B", "Meal C",
@@ -51,6 +54,31 @@ class MenuFrame extends JFrame {
 
     final static String[] SIZES = {
             "R", "U"
+    };
+
+    private ActionListener addToOrder = (e) -> {
+        int amt = getAmount();
+        String size = getMealSize();
+        String type = getMealType();
+
+        if (!type.contains("Meal"))
+            size = "-";
+        if (amt > 0 && !size.equals("!") && !type.equals("!")) {
+            // those are mostly dead values
+            String outputStrings[] = new String[3];
+            outputStrings[0] = type;
+            outputStrings[1] = size;
+            outputStrings[2] = amt + "";
+
+            order_stack.push(outputStrings);
+            displayLastAdded();
+
+            grossCost += Double.parseDouble(orderCost.getText());
+            grossCostLabel.setText(String.format("%.2f", grossCost));
+
+            netCost = (grossCost > 2000) ? grossCost * (1 - DISCOUNT) * (1 + VAT) : grossCost * (1 + VAT);
+            netCostLabel.setText(String.format("%.2f", netCost));
+        }
     };
 
     MenuFrame() {
@@ -110,12 +138,12 @@ class MenuFrame extends JFrame {
         // The display for the net and gross cost
         Panel costs = new Panel(new GridLayout(2, 2));
         costs.add(new Label("Gross Cost:", Label.CENTER));
-        grossCost = new Label("0.00");
-        costs.add(grossCost);
+        grossCostLabel = new Label("0.00");
+        costs.add(grossCostLabel);
         costs.add(new Label("Net Cost:", Label.CENTER));
-        netCost = new Label("0.00");
+        netCostLabel = new Label("0.00");
 
-        costs.add(netCost);
+        costs.add(netCostLabel);
         payment.add(costs);
 
         // Confirms orders
@@ -129,25 +157,6 @@ class MenuFrame extends JFrame {
         finalChanges.add(undoButton);
         payment.add(finalChanges);
     }
-
-    private ActionListener addToOrder = (e) -> {
-        int amt = getAmount();
-        String size = getMealSize();
-        String type = getMealType();
-
-        if (!type.contains("Meal"))
-            size = "-";
-        if (amt > 0 && !size.equals("!") && !type.equals("!")) {
-            // those are mostly dead values
-            String outputStrings[] = new String[3];
-            outputStrings[0] = type;
-            outputStrings[1] = size;
-            outputStrings[2] = amt + "";
-
-            order_stack.push(outputStrings);
-            displayLastAdded();
-        }
-    };
 
     private void createOrderFields() {
         orders = new Panel(new FlowLayout(FlowLayout.RIGHT, 0, 0));

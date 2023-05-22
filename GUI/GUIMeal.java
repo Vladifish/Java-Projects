@@ -23,7 +23,8 @@ class MenuFrame extends JFrame {
     private Panel header, body, orders, payment; // Main Panels
     private Panel lastItemAdded, orderHeader, lastAddedOrder; // Utility Panels
     private Button addButton, undoButton;
-    private Label netCost, grossCost;
+    private Label netCost, grossCost,
+            orderType, orderSize, orderAmount, orderCost;
 
     TextField amountField;
     JComboBox<String> mealOptions, sizeOptions;
@@ -31,7 +32,7 @@ class MenuFrame extends JFrame {
     HashMap<String, String[]> MENU_MAP = new HashMap<>();
 
     final static String[] MEAL_OPTIONS = {
-            "Meal A", "Meal B", "MEAL C",
+            "Meal A", "Meal B", "Meal C",
             "Extra Rice", "Salad", "Soup", "Dessert"
     };
 
@@ -55,7 +56,7 @@ class MenuFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Ordertaker");
         setLayout(new GridLayout(4, 1));
-        setSize(600, 600);
+        setSize(650, 650);
         setLocationRelativeTo(null);
 
         for (int i = 0; i < MENU.length / 3; i++) {
@@ -85,8 +86,20 @@ class MenuFrame extends JFrame {
     private void createPaymentPanel() {
         payment = new Panel(new GridLayout(2, 2));
         lastItemAdded = new Panel(new GridLayout(2, 1));
-        orderHeader = createRow("Meal", "Size", "Amount");
-        lastAddedOrder = createRow("---", "---", "---");
+        orderHeader = createRow("Meal", "Size", "Amount", "Cost");
+        lastAddedOrder = new Panel(new GridLayout(1, 4));
+
+        // These Labels would be filled up later on
+        orderType = new Label("---", Label.CENTER);
+        orderSize = new Label("---", Label.CENTER);
+        orderAmount = new Label("---", Label.CENTER);
+        orderCost = new Label("---", Label.CENTER);
+
+        lastAddedOrder.add(orderType);
+        lastAddedOrder.add(orderSize);
+        lastAddedOrder.add(orderAmount);
+        lastAddedOrder.add(orderCost);
+
         lastItemAdded.add(orderHeader);
         lastItemAdded.add(lastAddedOrder);
         displayLastAdded(); // the last item added, will be completely empty at first run
@@ -120,7 +133,10 @@ class MenuFrame extends JFrame {
         int amt = getAmount();
         String size = getMealSize();
         String type = getMealType();
-        if (amt != -1 && !size.equals("!") && !type.equals("!")) {
+
+        if (!type.contains("Meal"))
+            size = "-";
+        if (amt > 0 && !size.equals("!") && !type.equals("!")) {
             // those are mostly dead values
             String outputStrings[] = new String[3];
             outputStrings[0] = type;
@@ -219,15 +235,25 @@ class MenuFrame extends JFrame {
      * If the stack is empty, then the output should also be empty
      */
     private void displayLastAdded() {
-        lastItemAdded.remove(lastAddedOrder); // resets the board
-
         if (!order_stack.isEmpty()) {
             String[] lastOrder = order_stack.peek();
-            lastAddedOrder = createRow(lastOrder[0], lastOrder[1], lastOrder[2]);
+            orderType.setText(lastOrder[0]);
+            orderSize.setText(lastOrder[1]);
+            orderAmount.setText(lastOrder[2]);
+            orderCost.setText(computeCost(lastOrder[0], lastOrder[1], lastOrder[2]) + "");
         } else {
-            lastAddedOrder = createRow("-", "-", "-"); // Completely Empty
+            orderType.setText("---");
+            orderSize.setText("---");
+            orderAmount.setText("---");
+            // Completely Empty
         }
-        lastItemAdded.add(lastAddedOrder);
+    }
+
+    private double computeCost(String type, String size, String amount) {
+        double computedCost = 0;
+        String[] sizedPrices = MENU_MAP.get(type);
+
+        return -1;
     }
 
     public int getAmount() {
@@ -235,7 +261,7 @@ class MenuFrame extends JFrame {
         try {
             amount = Integer.parseInt(amountField.getText());
             if (amount < 0) {
-                JOptionPane.showMessageDialog(null, "Amount must be positive or 0", "ERROR",
+                JOptionPane.showMessageDialog(null, "Amount must be a positive integer", "ERROR",
                         JOptionPane.WARNING_MESSAGE);
             }
         } catch (NullPointerException e) {

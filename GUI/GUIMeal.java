@@ -5,7 +5,6 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 import javax.swing.JComboBox;
@@ -81,6 +80,21 @@ class MenuFrame extends JFrame {
         }
     };
 
+    private ActionListener undoOrder = (e) -> {
+        if (order_stack.isEmpty())
+            return;
+        String[] removedOrder = order_stack.pop();
+
+        grossCost -= Double.parseDouble(orderCost.getText());
+        grossCostLabel.setText(String.format("%.2f", grossCost));
+
+        netCost = (grossCost > 2000) ? grossCost * (1 - DISCOUNT) * (1 + VAT) : grossCost * (1 + VAT);
+        netCostLabel.setText(String.format("%.2f", netCost));
+
+        displayLastAdded();
+
+    };
+
     MenuFrame() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Ordertaker");
@@ -152,6 +166,7 @@ class MenuFrame extends JFrame {
         undoButton = new Button("UNDO");
 
         addButton.addActionListener(addToOrder);
+        undoButton.addActionListener(undoOrder);
 
         finalChanges.add(addButton);
         finalChanges.add(undoButton);
@@ -255,6 +270,7 @@ class MenuFrame extends JFrame {
             orderType.setText("---");
             orderSize.setText("---");
             orderAmount.setText("---");
+            orderCost.setText("---");
             // Completely Empty
         }
     }

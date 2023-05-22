@@ -5,6 +5,7 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import javax.swing.JComboBox;
@@ -37,9 +38,9 @@ class MenuFrame extends JFrame {
     };
 
     final static String[] MENU = {
-            "A", "78.75", "102.50",
-            "B", "68.75", "85.70",
-            "C", "70.25", "95.60",
+            "Meal A", "78.75", "102.50",
+            "Meal B", "68.75", "85.70",
+            "Meal C", "70.25", "95.60",
             "-----", "-----", "-----",
             "Sides", "(No sizes)", "",
             "Extra Rice", "20.00", "",
@@ -253,7 +254,13 @@ class MenuFrame extends JFrame {
         double computedCost = 0;
         String[] sizedPrices = MENU_MAP.get(type);
 
-        return -1;
+        int i = 0;
+        if (size.equals("L")) {
+            i = 1;
+        }
+
+        computedCost = Integer.parseInt(amount) * Double.parseDouble(sizedPrices[i]);
+        return computedCost;
     }
 
     public int getAmount() {

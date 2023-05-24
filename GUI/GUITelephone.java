@@ -59,7 +59,7 @@ class TelephoneUI extends JFrame {
         setContentPane(contentPanel);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("GUI Calculator");
+        setTitle("GUI Telephone");
 
         setupOutputPanel();
         contentPanel.add(CostOutputPanel);

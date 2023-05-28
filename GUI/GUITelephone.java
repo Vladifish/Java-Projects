@@ -6,7 +6,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-// TODO: Functionality and Submit Button
 public class GUITelephone {
 
     final static int CALL_RATE = 4;

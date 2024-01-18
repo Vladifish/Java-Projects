@@ -16,6 +16,10 @@ public class ColorCalculator extends WindowAdapter {
 
     private Panel inputArea, outputArea;
 
+    // all the current text-field values, used for cross-checking
+    // also used for reverting text in a text-field for errors
+    private String curr_red, curr_blue, curr_green, curr_alpha;
+
     // the app would be divided into two parts
     // top would be where the user would provide input
     // bottom is the color output
@@ -44,6 +48,8 @@ public class ColorCalculator extends WindowAdapter {
         // panels
         inputArea = new Panel(new GridLayout(5, 2, 0, 5));
         outputArea = new Panel();
+
+        clearTextFieldValues();
     }
 
     public void startApp() {
@@ -95,11 +101,10 @@ public class ColorCalculator extends WindowAdapter {
 
         clearButton.addActionListener(
                 e -> {
-                    redTF.setText("0");
-                    greenTF.setText("0");
-                    blueTF.setText("0");
-                    alphaTF.setText("0");
+                    clearTextFieldValues();
+                    updateTextFields();
                 });
+
     }
 
     // private class computeEvent implements ActionListener {
@@ -111,6 +116,20 @@ public class ColorCalculator extends WindowAdapter {
     // exits the page on clicking the exit button
     public void windowClosing(WindowEvent we) {
         System.exit(0);
+    }
+
+    private void clearTextFieldValues() {
+        curr_red = "0";
+        curr_blue = "0";
+        curr_green = "0";
+        curr_alpha = "0";
+    }
+
+    private void updateTextFields() {
+        redTF.setText(curr_red);
+        greenTF.setText(curr_blue);
+        blueTF.setText(curr_green);
+        alphaTF.setText(curr_alpha);
     }
 
     public static void main(String[] args) {

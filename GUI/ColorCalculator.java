@@ -87,6 +87,8 @@ public class ColorCalculator extends WindowAdapter {
     }
 
     public void setupListeners() {
+
+        // updates the color output
         computeButton.addActionListener(
                 e -> {
                     int red, green, blue, alpha;
@@ -99,19 +101,54 @@ public class ColorCalculator extends WindowAdapter {
                     outputArea.setBackground(new Color(red, green, blue, alpha));
                 });
 
+        // sets all the values in the TF to '0'
         clearButton.addActionListener(
                 e -> {
                     clearTextFieldValues();
                     updateTextFields();
                 });
 
+        // checks if there's a change in a text field
+        // then checks for errors, if no change then go as usual
+        TextListener textFieldCheck = (e) -> {
+            TextField tf = (TextField) e.getSource();
+            String new_val = tf.getText();
+
+            // input clean-up
+            // text field must pass through a series of checks,
+
+            if (!checkIfNumber(new_val)) {
+                System.out.println("Not a number!");
+                updateTextFields();
+                updateStoredValues();
+                return;
+            }
+
+            if (!checkIfInRange(new_val)) {
+                System.out.println("Number must be inside the range (0-255)");
+                updateTextFields();
+                updateStoredValues();
+                return;
+            }
+
+            updateStoredValues();
+            System.out.println(new_val);
+        };
+
+        redTF.addTextListener(textFieldCheck);
+        blueTF.addTextListener(textFieldCheck);
+        greenTF.addTextListener(textFieldCheck);
+        alphaTF.addTextListener(textFieldCheck);
     }
 
-    // private class computeEvent implements ActionListener {
-    // public void ActionPerformed(ActionEvent e) {
+    public boolean checkIfNumber(String val) {
+        return val.matches("^[0-9].*");
+    }
 
-    // }
-    // }
+    public boolean checkIfInRange(String val) throws NumberFormatException {
+        int num = Integer.parseInt(val);
+        return num <= 255 && num >= 0;
+    }
 
     // exits the page on clicking the exit button
     public void windowClosing(WindowEvent we) {
@@ -130,6 +167,14 @@ public class ColorCalculator extends WindowAdapter {
         greenTF.setText(curr_blue);
         blueTF.setText(curr_green);
         alphaTF.setText(curr_alpha);
+    }
+
+    private void updateStoredValues() {
+        // I could make this an array, if we need to scale the application
+        curr_red = redTF.getText();
+        curr_blue = blueTF.getText();
+        curr_green = greenTF.getText();
+        curr_alpha = alphaTF.getText();
     }
 
     public static void main(String[] args) {

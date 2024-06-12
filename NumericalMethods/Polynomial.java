@@ -1,4 +1,4 @@
-package Math;
+package NumericalMethods;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class Polynomial {
      * </p>
      * <ol>
      * <li>Add a plus (+) or minus (-) to separate each part.</li>
-     * <li>Add the caret <i>(^)</i> symbol to signify power</li>
+     * <li>Add the caret (^) symbol to signify power</li>
      * <li>Exponents should be in decreasing order</li>
      * </ol>
      * <br>

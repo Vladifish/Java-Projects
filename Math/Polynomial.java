@@ -6,7 +6,7 @@ public class Polynomial {
 
     /**
      * Evaluates a simplified polynomial expression using Horner's Rule.
-     * This function cannot currently evaluate fractional exponents.
+     * This function cannot currently evaluate fractional and negative exponents.
      * <p>
      * Formatted as follows: <b>5x^2 + 2x - 3</b>.
      * </p>
@@ -32,6 +32,7 @@ public class Polynomial {
         String[] separated = new String[separated_list.size()];
         separated = separated_list.toArray(separated);
 
+        // checks how many iterations should be done
         int max_power = 0; // default
         if (separated[0].contains("x")) {
             if (separated[0].contains("^"))
@@ -40,37 +41,31 @@ public class Polynomial {
                 max_power = 1;
         }
 
+        // the evaluation part
         double out = 0;
-        for (int i = max_power, j = 0; i >= 0; i--) {
-            int power = -1;
-            String part = separated[j];
-
-            // fixes the exponent
-            if (part.contains("x")) {
-                if (part.contains("^")) {
-                    power = Integer.parseInt(part.split("\\^")[1]);
-                } else
-                    power = 1;
-            } else if (!part.contains("x")) {
-                power = 0;
-            }
-
-            // the actual evaluation
+        for (int i = max_power, j = 0, power = max_power; i >= 0; i--) {
             if (power == i) {
                 if (i > 0) {
-                    String num_str = part.split("x")[0];
-
+                    String num_str = separated[j].split("x")[0];
                     if (!num_str.equals("") && num_str != null) {
                         out = (out + Double.parseDouble(num_str)) * x;
                     } else {
                         out = (out + 1) * x;
                     }
-
                 } else {
-                    out += Double.parseDouble(part);
+                    out += Double.parseDouble(separated[j]);
                 }
 
+                // fixes the exponent
                 j = (j + 1 == separated.length) ? j : j + 1; // stops possible overflow
+                if (separated[j].contains("x")) {
+                    if (separated[j].contains("^")) {
+                        power = Integer.parseInt(separated[j].split("\\^")[1]);
+                    } else
+                        power = 1;
+                } else if (!separated[j].contains("x")) {
+                    power = 0;
+                }
 
                 // System.out.printf("Evaluate step: %.2f \n", out);
             } else {
@@ -105,7 +100,7 @@ public class Polynomial {
     }
 
     public static void main(String[] args) {
-        double exp = Polynomial.evaluate("2x^4 + 5x + 3", 2);
+        double exp = Polynomial.evaluate("3x^2 + 3", 2);
         System.out.println(exp);
     }
 }
